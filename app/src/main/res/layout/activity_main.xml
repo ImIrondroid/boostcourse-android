@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,7 +47,7 @@
                 android:layout_marginLeft="16dp"
                 android:text="군도"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="24dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/movie_limit"
                 app:layout_constraintStart_toEndOf="@id/movie_image"
@@ -312,7 +312,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/movie_description"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -348,7 +348,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/movie_performer"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -362,7 +362,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/movie_director"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/_perfomer" />
@@ -375,7 +375,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:text="윤종빈"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 app:layout_constraintStart_toEndOf="@id/_director"
                 app:layout_constraintTop_toBottomOf="@id/_perfomer" />
 
@@ -388,7 +388,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/movie_actor"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/_director" />
@@ -401,7 +401,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:text="하정우(도치), 강동원(조윤)"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 app:layout_constraintStart_toEndOf="@id/_actor"
                 app:layout_constraintTop_toBottomOf="@id/_director" />
 
@@ -425,7 +425,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/movie_oneline_review"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -450,7 +450,7 @@
                 android:layout_marginRight="16dp"
                 android:text="@string/movie_write_review"
                 android:textColor="@color/red"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -527,7 +527,7 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/movie_ticketing"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/_sns"
                 app:layout_constraintEnd_toEndOf="parent"
