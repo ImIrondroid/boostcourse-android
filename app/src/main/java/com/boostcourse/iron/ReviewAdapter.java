@@ -1,19 +1,35 @@
 package com.boostcourse.iron;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class ReviewAdapter extends BaseAdapter {
 
-    ArrayList<Review> items = new ArrayList<>();
-    Context context;
+    private ArrayList<Review> items = new ArrayList<>();
+
+    private final LayoutInflater inflater;
+    private TextView tvUserId;
+    private TextView tvUserContents;
+    private TextView tvUserRecommendCount;
+    private TextView tvUserReviewTimeDiff;
+    private ImageView ivUserImage;
+    private RatingBar rbUserGrade;
 
     public ReviewAdapter(Context context) {
-        this.context = context;
+        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public void addReview(Review review) {
+        items.add(review);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -33,26 +49,25 @@ public class ReviewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ReviewItemView view;
         if(convertView == null) {
-            view = new ReviewItemView(context);
-        } else { //convertView가 null이 아닐때 새로운 View를 inflate 하는것이 아닌 기존에 inflate를 거친 View를 재사용하며 데이터만 바꾸는 작업을 진행합니다.
-            view = (ReviewItemView) convertView;
+            convertView = inflater.inflate(R.layout.item_review, parent, false);
         }
 
+        tvUserId = (TextView) convertView.findViewById(R.id.tv_user_id);
+        tvUserContents = (TextView) convertView.findViewById(R.id.tv_user_contents);
+        tvUserRecommendCount = (TextView) convertView.findViewById(R.id.tv_user_recommend_count);
+        tvUserReviewTimeDiff = (TextView) convertView.findViewById(R.id.tv_user_review_time_diff);
+        ivUserImage = (ImageView) convertView.findViewById(R.id.iv_user_image);
+        rbUserGrade = (RatingBar) convertView.findViewById(R.id.rb_user_grade);
+
         Review item = items.get(position);
-        view.setUserImage(R.drawable.user1);
-        view.setUserId(item.userId);
-        view.setContents(item.contents);
-        view.setGrade(item.grade);
-        view.setDiffTime(item.time);
-        view.setRecommendCount(item.recommendCount);
+        tvUserId.setText(item.getUserId());
+        tvUserContents.setText(item.getContents());
+        tvUserRecommendCount.setText(String.valueOf(item.getRecommendCount()));
+        tvUserReviewTimeDiff.setText(String.valueOf((System.currentTimeMillis() - item.getTime()) / 60000));
+        ivUserImage.setImageResource(item.getResourceId());
+        rbUserGrade.setRating(item.getGrade());
 
-        return view;
-    }
-
-    public void addReview(Review review) {
-        items.add(review);
-        notifyDataSetChanged();
+        return convertView;
     }
 }

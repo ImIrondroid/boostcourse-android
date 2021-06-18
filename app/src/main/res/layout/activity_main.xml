@@ -9,19 +9,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/gray">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:background="@color/gray_efefef">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/movie_info"
+            android:id="@+id/cl_movie_info"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/background_movie"
@@ -31,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/movie_image"
+                android:id="@+id/iv_movie_image"
                 android:layout_width="100dp"
                 android:layout_height="140dp"
                 android:background="@drawable/image11"
@@ -39,41 +30,41 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/movie_title"
+                android:id="@+id/tv_movie_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:text="군도"
-                android:textColor="@color/white"
+                android:textColor="@color/white_ffffffff"
                 android:textSize="24dp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/movie_limit"
-                app:layout_constraintStart_toEndOf="@id/movie_image"
-                app:layout_constraintTop_toTopOf="@id/movie_limit" />
+                app:layout_constraintBottom_toBottomOf="@id/iv_movie_limit"
+                app:layout_constraintStart_toEndOf="@id/iv_movie_image"
+                app:layout_constraintTop_toTopOf="@id/iv_movie_limit" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/movie_limit"
+                android:id="@+id/iv_movie_limit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/ic_15"
-                app:layout_constraintBottom_toTopOf="@id/movie_date"
-                app:layout_constraintStart_toEndOf="@id/movie_title" />
+                app:layout_constraintBottom_toTopOf="@id/tv_movie_date"
+                app:layout_constraintStart_toEndOf="@id/tv_movie_title" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/movie_date"
+                android:id="@+id/tv_movie_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:text="2014.07.23"
-                android:textColor="@color/white"
+                android:textColor="@color/white_ffffffff"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/movie_genre"
-                app:layout_constraintStart_toEndOf="@id/movie_image" />
+                app:layout_constraintBottom_toTopOf="@id/tv_movie_genre"
+                app:layout_constraintStart_toEndOf="@id/iv_movie_image" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -81,23 +72,23 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:text="@string/movie_release"
-                android:textColor="@color/white"
+                android:textColor="@color/white_ffffffff"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/movie_genre"
-                app:layout_constraintStart_toEndOf="@id/movie_date" />
+                app:layout_constraintBottom_toTopOf="@id/tv_movie_genre"
+                app:layout_constraintStart_toEndOf="@id/tv_movie_date" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/movie_genre"
+                android:id="@+id/tv_movie_genre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginBottom="8dp"
                 android:text="액션"
-                android:textColor="@color/white"
+                android:textColor="@color/white_ffffffff"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/movie_thumb_up"
-                app:layout_constraintStart_toEndOf="@id/movie_image" />
+                app:layout_constraintBottom_toTopOf="@id/btn_movie_thumb_up"
+                app:layout_constraintStart_toEndOf="@id/iv_movie_image" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/_slash"
@@ -107,86 +98,86 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="/"
-                android:textColor="@color/white"
+                android:textColor="@color/white_ffffffff"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/movie_thumb_up"
-                app:layout_constraintStart_toEndOf="@id/movie_genre" />
+                app:layout_constraintBottom_toTopOf="@id/btn_movie_thumb_up"
+                app:layout_constraintStart_toEndOf="@id/tv_movie_genre" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/movie_time"
+                android:id="@+id/tv_movie_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="137분"
-                android:textColor="@color/white"
+                android:textColor="@color/white_ffffffff"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/movie_thumb_up"
+                app:layout_constraintBottom_toTopOf="@id/btn_movie_thumb_up"
                 app:layout_constraintStart_toEndOf="@id/_slash" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/movie_thumb_up"
+                android:id="@+id/btn_movie_thumb_up"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/selector_thumb_up"
-                app:layout_constraintBottom_toBottomOf="@id/movie_image"
-                app:layout_constraintStart_toEndOf="@id/movie_image" />
+                app:layout_constraintBottom_toBottomOf="@id/iv_movie_image"
+                app:layout_constraintStart_toEndOf="@id/iv_movie_image" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/movie_thumb_up_count"
+                android:id="@+id/tv_movie_thumbup_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="15"
-                android:textColor="@color/white"
+                android:text="0"
+                android:textColor="@color/white_ffffffff"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/movie_image"
-                app:layout_constraintStart_toEndOf="@id/movie_thumb_up" />
+                app:layout_constraintBottom_toBottomOf="@id/iv_movie_image"
+                app:layout_constraintStart_toEndOf="@id/btn_movie_thumb_up" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/movie_thumb_down"
+                android:id="@+id/btn_movie_thumb_down"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/selector_thumb_down"
-                app:layout_constraintBottom_toBottomOf="@id/movie_image"
-                app:layout_constraintStart_toEndOf="@id/movie_thumb_up_count" />
+                app:layout_constraintBottom_toBottomOf="@id/iv_movie_image"
+                app:layout_constraintStart_toEndOf="@id/tv_movie_thumbup_count" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/movie_thumb_down_count"
+                android:id="@+id/tv_movie_thumbdown_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="1"
-                android:textColor="@color/white"
+                android:text="0"
+                android:textColor="@color/white_ffffffff"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/movie_image"
-                app:layout_constraintStart_toEndOf="@id/movie_thumb_down" />
+                app:layout_constraintBottom_toBottomOf="@id/iv_movie_image"
+                app:layout_constraintStart_toEndOf="@id/btn_movie_thumb_down" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/movie_score"
+            android:id="@+id/ll_movie_score"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/white_ffffffff"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movie_info">
+            app:layout_constraintTop_toBottomOf="@id/cl_movie_info">
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/linear_rate"
+                android:id="@+id/ll_movie_rank_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -207,6 +198,7 @@
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_movie_rank"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -221,19 +213,28 @@
                         android:textStyle="bold" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_movie_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="1.8%"
+                        android:text="1.8"
                         android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="%"
+                        android:textStyle="bold" />
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/linear_average"
+                android:id="@+id/ll_movie_grade_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -254,7 +255,7 @@
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatRatingBar
-                        android:id="@+id/movie_grade"
+                        android:id="@+id/rb_movie_grade"
                         style="@style/Widget.AppCompat.RatingBar.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -262,6 +263,7 @@
                         android:rating="4.5" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_movie_grade"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -275,7 +277,7 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/linear_sum"
+                android:id="@+id/ll_cumulative_audience_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -296,6 +298,7 @@
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_movie_cumulative_audience"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -316,13 +319,13 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/movie_contents"
+            android:id="@+id/cl_movie_contents_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@color/white"
+            android:background="@color/white_ffffffff"
             android:paddingBottom="16dp"
-            app:layout_constraintTop_toBottomOf="@id/movie_score">
+            app:layout_constraintTop_toBottomOf="@id/ll_movie_score">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/_contents"
@@ -332,13 +335,14 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/movie_contents"
-                android:textColor="@color/black"
+                android:textColor="@color/black_ff000000"
                 android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_movie_contents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -351,13 +355,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/movie_perfomer"
+            android:id="@+id/cl_movie_perfomer_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@color/white"
+            android:background="@color/white_ffffffff"
             android:paddingBottom="16dp"
-            app:layout_constraintTop_toBottomOf="@id/movie_contents"
+            app:layout_constraintTop_toBottomOf="@id/cl_movie_contents_group"
             tools:layout_editor_absoluteX="0dp">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -368,7 +372,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/movie_performer"
-                android:textColor="@color/black"
+                android:textColor="@color/black_ff000000"
                 android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -382,14 +386,14 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/movie_director"
-                android:textColor="@color/black"
+                android:textColor="@color/black_ff000000"
                 android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/_perfomer" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/director"
+                android:id="@+id/tv_movie_director"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -408,14 +412,14 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/movie_actor"
-                android:textColor="@color/black"
+                android:textColor="@color/black_ff000000"
                 android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/_director" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/actor"
+                android:id="@+id/tv_movie_actor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -429,13 +433,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/movie_review"
+            android:id="@+id/cl_movie_review_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@color/white"
+            android:background="@color/white_ffffffff"
             android:paddingBottom="16dp"
-            app:layout_constraintTop_toBottomOf="@id/movie_perfomer">
+            app:layout_constraintTop_toBottomOf="@id/cl_movie_perfomer_group">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/_review"
@@ -445,7 +449,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/movie_oneline_review"
-                android:textColor="@color/black"
+                android:textColor="@color/black_ff000000"
                 android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -457,12 +461,12 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/ic_review_selected"
-                app:layout_constraintBottom_toBottomOf="@id/write_review"
-                app:layout_constraintEnd_toStartOf="@id/write_review"
-                app:layout_constraintTop_toTopOf="@id/write_review" />
+                app:layout_constraintBottom_toBottomOf="@id/tv_write_review"
+                app:layout_constraintEnd_toStartOf="@id/tv_write_review"
+                app:layout_constraintTop_toTopOf="@id/tv_write_review" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/write_review"
+                android:id="@+id/tv_write_review"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -470,14 +474,14 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:text="@string/movie_write_review"
-                android:textColor="@color/red"
+                android:textColor="@color/red_c50202"
                 android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ListView
-                android:id="@+id/list_review"
+                android:id="@+id/lv_movie_review"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -489,7 +493,7 @@
                 tools:listitem="@layout/item_review" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/see_review"
+                android:id="@+id/tv_see_review"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginStart="16dp"
@@ -500,7 +504,7 @@
                 android:text="@string/movie_see_review"
                 android:textColor="@color/purple_500"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/list_review" />
+                app:layout_constraintTop_toBottomOf="@id/lv_movie_review" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -508,9 +512,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@color/white"
+            android:background="@color/white_ffffffff"
             android:padding="16dp"
-            app:layout_constraintTop_toBottomOf="@id/movie_review">
+            app:layout_constraintTop_toBottomOf="@id/cl_movie_review_group">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/_sns"
@@ -521,6 +525,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_facebook"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -529,6 +534,7 @@
                     android:background="@drawable/ic_facebook" />
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_kakao"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -539,15 +545,16 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_movie_book"
                 android:layout_width="0dp"
                 android:layout_height="72dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_weight="3"
-                android:background="@color/red"
+                android:background="@color/red_c50202"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="@string/movie_ticketing"
-                android:textColor="@color/white"
+                android:text="@string/movie_book"
+                android:textColor="@color/white_ffffffff"
                 android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/_sns"

@@ -14,7 +14,7 @@
     <string name="movie_oneline_review">한줄평</string>
     <string name="movie_write_review">작성하기</string>
     <string name="movie_see_review">모두 보기</string>
-    <string name="movie_ticketing">예매하기</string>
+    <string name="movie_book">예매하기</string>
 
     <string name="item_diff_time">분전</string>
     <string name="item_recommend">추천</string>

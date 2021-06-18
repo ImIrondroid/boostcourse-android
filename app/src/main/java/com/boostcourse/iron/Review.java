@@ -2,12 +2,12 @@ package com.boostcourse.iron;
 
 public class Review {
 
-    String userId;
-    String contents;
-    Long time;
-    float grade;
-    int resId;
-    int recommendCount;
+    private String userId;
+    private String contents;
+    private Long time;
+    private float grade;
+    private int resId;
+    private int recommendCount;
 
     public Review(String userId, String contents, float grade, int resId, int recommendCount) {
         this.userId = userId;
