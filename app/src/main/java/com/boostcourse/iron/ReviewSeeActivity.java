@@ -4,20 +4,27 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class ReviewSeeActivity extends AppCompatActivity {
 
-    private ListView reviewListView;
-    private TextView reviewWriteTextView;
+    static final int REQUEST_CODE_REVIEW_SEE = 102;
 
-    //영상에 나오는 방식의 startActivityForResult가 deprecated라 나와서 새로운 API를 사용하였습니다.
+    private ReviewAdapter reviewAdapter;
+
+    private ListView lvMovieReview;
+    private TextView tvReviewWrite;
+
+    //영상에 나오는 방식의 startActivityForResult()메서드가 Deprecated여서 새로운 API를 적용해 보았습니다.
     private final ActivityResultLauncher<Intent> startActivityResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -25,10 +32,9 @@ public class ReviewSeeActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     if(result.getResultCode() == ReviewWriteActivity.REQUEST_CODE_REVIEW_WRITE) {
                         Intent intent = result.getData();
-                        if(intent != null) {
-                            float grade = intent.getFloatExtra("rating", 0.0f);
-                            String text = intent.getStringExtra("text");
-                            Log.e("grade : " + grade, ", text : " + text);
+                        if(intent != null) { //데이터 전환이 잘 일어나는지 체크합니다.
+                            Review review = intent.getParcelableExtra("review");
+                            reviewAdapter.addReview(review);
                         }
                     }
                 }
@@ -45,23 +51,34 @@ public class ReviewSeeActivity extends AppCompatActivity {
     }
 
     private void viewInit() {
-        reviewListView = (ListView) findViewById(R.id.review_list);
-        reviewWriteTextView = (TextView) findViewById(R.id.review_write);
+        lvMovieReview = (ListView) findViewById(R.id.lv_movie_review);
+        tvReviewWrite = (TextView) findViewById(R.id.tv_review_write);
 
-        ReviewAdapter reviewAdapter = new ReviewAdapter(this);
-        reviewAdapter.addReview(new Review("android34", "정말 재미있게 봐서 지인에게 추천하고 싶습니다.", (float) 5.0, R.drawable.user1, 1));
-        reviewAdapter.addReview(new Review("github12", "제 기준에는 적당히 재밌습니다.", (float) 2.5, R.drawable.user1, 2));
-        reviewAdapter.addReview(new Review("native3333", "보통입니다. 오랜만에 잠 안오는 영화를 봤습니다.", (float) 3.8, R.drawable.user1, 4));
-        reviewAdapter.addReview(new Review("sleepyZZ", "영화보면서 졸려서 혼났습니다.", (float) 1.2, R.drawable.user1, 10));
-        reviewAdapter.addReview(new Review("machine54", "그저 그런 내용의 영화입니다.", (float) 3.0, R.drawable.user1, 0));
-        reviewAdapter.addReview(new Review("movie12", "영화는 항상 재미있습니다.", (float) 4.0, R.drawable.user1, 1));
-        reviewListView.setAdapter(reviewAdapter);
+        reviewAdapter = new ReviewAdapter(this);
+        Intent intent = getIntent();
+        if(intent != null) { //MainActivity에서 보낸 item 리스트를 가져옵니다.
+            ArrayList<Review> items = intent.getParcelableArrayListExtra("items");
+            reviewAdapter.setReviewList(items);
+        }
+        lvMovieReview.setAdapter(reviewAdapter);
     }
 
     private void viewEvent() {
-        reviewWriteTextView.setOnClickListener(view -> {
+        tvReviewWrite.setOnClickListener(view -> {
             Intent intent = new Intent(this, ReviewWriteActivity.class);
             startActivityResult.launch(intent);
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == android.R.id.home) { //뒤로가기 버튼 클릭시 ListView의 데이터를 MainActivity와 동기화합니다.
+            Intent intent = new Intent();
+            intent.putParcelableArrayListExtra("items", reviewAdapter.getReviewList());
+            setResult(REQUEST_CODE_REVIEW_SEE, intent);
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -2,23 +2,20 @@ package com.boostcourse.iron;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.TextView;
 
 public class ReviewWriteActivity extends AppCompatActivity {
 
     static final int REQUEST_CODE_REVIEW_WRITE = 101;
 
-    private RatingBar reviewGradeRatingBar;
-    private EditText reviewTextEditText;
-    private Button saveButton;
-    private Button cancelButton;
+    private RatingBar rbReviewGrade;
+    private EditText etReviewText;
+    private Button btnReviewSave;
+    private Button btnReviewCancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,22 +27,21 @@ public class ReviewWriteActivity extends AppCompatActivity {
     }
 
     private void viewInit() {
-        reviewGradeRatingBar = (RatingBar) findViewById(R.id.review_grade);
-        reviewTextEditText = (EditText) findViewById(R.id.review_text);
-        saveButton = (Button) findViewById(R.id.review_save);
-        cancelButton = (Button) findViewById(R.id.review_cancel);
+        rbReviewGrade = (RatingBar) findViewById(R.id.rb_review_grade);
+        etReviewText = (EditText) findViewById(R.id.et_review_text);
+        btnReviewSave = (Button) findViewById(R.id.btn_review_save);
+        btnReviewCancel = (Button) findViewById(R.id.btn_review_cancel);
     }
 
     private void viewEvent() {
-        saveButton.setOnClickListener(view -> {
+        btnReviewSave.setOnClickListener(view -> {
             Intent intent = new Intent();
-            intent.putExtra("rating", reviewGradeRatingBar.getRating());
-            intent.putExtra("text", reviewTextEditText.getText().toString());
+            intent.putExtra("review", new Review("testID", etReviewText.getText().toString(), rbReviewGrade.getRating(), R.drawable.user1, 2));
             setResult(REQUEST_CODE_REVIEW_WRITE, intent);
             finish();
         });
 
-        cancelButton.setOnClickListener(view -> {
+        btnReviewCancel.setOnClickListener(view -> {
             finish();
         });
     }

@@ -3,6 +3,8 @@
     <string name="app_bar_review_write_name">한줄평 작성</string>
     <string name="app_bar_review_see_name">한줄평 목록</string>
 
+    <string name="back">뒤로 가기</string>
+
     <string name="movie_release">개봉</string>
     <string name="movie_rank_number">예매율</string>
     <string name="movie_rank_text">위</string>
@@ -18,7 +20,7 @@
     <string name="movie_see_review">모두 보기</string>
     <string name="movie_book">예매하기</string>
 
-    <string name="item_diff_time">분전</string>
+    <string name="item_time_diff">분전</string>
     <string name="item_recommend">추천</string>
     <string name="item_report">신고하기</string>
 

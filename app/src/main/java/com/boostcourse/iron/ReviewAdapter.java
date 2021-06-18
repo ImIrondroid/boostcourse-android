@@ -13,9 +13,10 @@ import java.util.ArrayList;
 
 public class ReviewAdapter extends BaseAdapter {
 
+    private final LayoutInflater inflater;
+
     private ArrayList<Review> items = new ArrayList<>();
 
-    private final LayoutInflater inflater;
     private TextView tvUserId;
     private TextView tvUserContents;
     private TextView tvUserRecommendCount;
@@ -29,7 +30,16 @@ public class ReviewAdapter extends BaseAdapter {
 
     public void addReview(Review review) {
         items.add(review);
-        notifyDataSetChanged();
+        notifyDataSetChanged(); //어댑터에게 데이터가 바뀌었다는 알림을 통해 다음 에러를 해결합니다. The content of the adapter has changed but ListView did not receive a notification.
+    }
+
+    public void setReviewList(ArrayList<Review> items) {
+        this.items = items;
+        notifyDataSetChanged(); //어댑터에게 데이터가 바뀌었다는 알림을 통해 다음 에러를 해결합니다. The content of the adapter has changed but ListView did not receive a notification.
+    }
+
+    public ArrayList<Review> getReviewList() {
+        return this.items;
     }
 
     @Override

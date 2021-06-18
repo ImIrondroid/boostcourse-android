@@ -39,12 +39,12 @@
                 android:textColor="@color/white_ffffffff"
                 android:textSize="24dp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/iv_movie_limit"
+                app:layout_constraintBottom_toBottomOf="@id/iv_movie_age_limit"
                 app:layout_constraintStart_toEndOf="@id/iv_movie_image"
-                app:layout_constraintTop_toTopOf="@id/iv_movie_limit" />
+                app:layout_constraintTop_toTopOf="@id/iv_movie_age_limit" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_movie_limit"
+                android:id="@+id/iv_movie_age_limit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -260,7 +260,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:rating="4.5" />
+                        android:rating="4.3"
+                        android:stepSize="0.1" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_movie_grade"
@@ -461,12 +462,12 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/ic_review_selected"
-                app:layout_constraintBottom_toBottomOf="@id/tv_write_review"
-                app:layout_constraintEnd_toStartOf="@id/tv_write_review"
-                app:layout_constraintTop_toTopOf="@id/tv_write_review" />
+                app:layout_constraintBottom_toBottomOf="@id/tv_review_write"
+                app:layout_constraintEnd_toStartOf="@id/tv_review_write"
+                app:layout_constraintTop_toTopOf="@id/tv_review_write" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_write_review"
+                android:id="@+id/tv_review_write"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -493,7 +494,7 @@
                 tools:listitem="@layout/item_review" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_see_review"
+                android:id="@+id/tv_review_see"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginStart="16dp"

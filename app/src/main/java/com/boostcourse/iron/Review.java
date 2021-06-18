@@ -1,6 +1,9 @@
 package com.boostcourse.iron;
 
-public class Review {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Review implements Parcelable {
 
     private String userId;
     private String contents;
@@ -17,6 +20,42 @@ public class Review {
         this.recommendCount = recommendCount;
         setTime();
     }
+
+    protected Review(Parcel in) {
+        userId = in.readString();
+        contents = in.readString();
+        time = in.readLong();
+        grade = in.readFloat();
+        resId = in.readInt();
+        recommendCount = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(userId);
+        dest.writeString(contents);
+        dest.writeLong(time);
+        dest.writeFloat(grade);
+        dest.writeInt(resId);
+        dest.writeInt(recommendCount);
+    }
+
+    public static final Creator<Review> CREATOR = new Creator<Review>() {
+        @Override
+        public Review createFromParcel(Parcel in) {
+            return new Review(in);
+        }
+
+        @Override
+        public Review[] newArray(int size) {
+            return new Review[size];
+        }
+    };
 
     public String getUserId() {
         return userId;
