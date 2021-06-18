@@ -1,8 +1,14 @@
 package com.boostcourse.iron;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -25,6 +31,24 @@ public class MainActivity extends AppCompatActivity {
     private int notLikeCount = 0;
     private boolean isLiked = false;
     private boolean isNotLiked = false;
+
+    //영상에 나오는 방식의 startActivityForResult가 deprecated라 나와서 새로운 API를 사용하였습니다.
+    private final ActivityResultLauncher<Intent> startActivityResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if(result.getResultCode() == ReviewWriteActivity.REQUEST_CODE_REVIEW_WRITE) {
+                        Intent intent = result.getData();
+                        if(intent != null) {
+                            float grade = intent.getFloatExtra("rating", 0.0f);
+                            String text = intent.getStringExtra("text");
+                            Log.e("grade : " + grade, ", text : " + text);
+                        }
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +87,14 @@ public class MainActivity extends AppCompatActivity {
 
         tvSeeReview.setOnClickListener(view -> {
             Toast.makeText(this, R.string.movie_see_review, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, ReviewSeeActivity.class);
+            startActivity(intent);
         });
 
         tvWriteReview.setOnClickListener(view -> {
             Toast.makeText(this, R.string.movie_write_review, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, ReviewWriteActivity.class);
+            startActivityResult.launch(intent);
         });
     }
 

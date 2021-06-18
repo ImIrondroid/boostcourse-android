@@ -499,7 +499,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/background_review"
+                android:background="@drawable/background_review_see"
                 android:gravity="center_vertical|center_horizontal"
                 android:text="@string/movie_see_review"
                 android:textColor="@color/purple_500"

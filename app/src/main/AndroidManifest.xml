@@ -9,9 +9,17 @@
         android:roundIcon="@drawable/ic_app"
         android:supportsRtl="true"
         android:theme="@style/Theme.Cinema">
+        <activity
+            android:name=".ReviewSeeActivity"
+            android:label="@string/app_bar_review_see_name"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ReviewWriteActivity"
+            android:label="@string/app_bar_review_write_name" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
