@@ -1,4 +1,4 @@
-package com.boostcourse.iron;
+package com.boostcourse.iron.detail.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

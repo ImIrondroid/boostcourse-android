@@ -13,7 +13,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/user1"
-        app:civ_border_color="@color/gray_efefef"
+        app:civ_border_color="@color/gray_ffefefef"
         app:civ_border_width="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

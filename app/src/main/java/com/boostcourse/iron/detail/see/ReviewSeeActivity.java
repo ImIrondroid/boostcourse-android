@@ -1,4 +1,4 @@
-package com.boostcourse.iron;
+package com.boostcourse.iron.detail.see;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +14,16 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.boostcourse.iron.R;
+import com.boostcourse.iron.detail.model.Review;
+import com.boostcourse.iron.detail.ReviewAdapter;
+import com.boostcourse.iron.detail.write.ReviewWriteActivity;
+
 import java.util.ArrayList;
 
 public class ReviewSeeActivity extends AppCompatActivity {
 
-    static final int REQUEST_CODE_REVIEW_SEE = 102;
+    public static final int REQUEST_CODE_REVIEW_SEE = 102;
 
     private ReviewAdapter reviewAdapter;
 
@@ -32,7 +38,7 @@ public class ReviewSeeActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     if(result.getResultCode() == ReviewWriteActivity.REQUEST_CODE_REVIEW_WRITE) {
                         Intent intent = result.getData();
-                        if(intent != null) { //데이터 전환이 잘 일어나는지 체크합니다.
+                        if(intent != null) {
                             Review review = intent.getParcelableExtra("review");
                             reviewAdapter.addReview(review);
                         }
@@ -51,13 +57,18 @@ public class ReviewSeeActivity extends AppCompatActivity {
     }
 
     private void viewInit() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_bar_review_see_name);
+        toolbar.setNavigationIcon(R.drawable.ic_back);
+        setSupportActionBar(toolbar);
+
         lvMovieReview = (ListView) findViewById(R.id.lv_movie_review);
         tvReviewWrite = (TextView) findViewById(R.id.tv_review_write);
 
         reviewAdapter = new ReviewAdapter(this);
         Intent intent = getIntent();
-        if(intent != null) { //MainActivity에서 보낸 item 리스트를 가져옵니다.
-            ArrayList<Review> items = intent.getParcelableArrayListExtra("items");
+        if(intent != null) { //MovieDetailFragment에서 전달한 리뷰 리스트를 가져옵니다.
+            ArrayList<Review> items = intent.getParcelableArrayListExtra("reviewList");
             reviewAdapter.setReviewList(items);
         }
         lvMovieReview.setAdapter(reviewAdapter);
@@ -72,13 +83,21 @@ public class ReviewSeeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == android.R.id.home) { //뒤로가기 버튼 클릭시 ListView의 데이터를 MainActivity와 동기화합니다.
+        if(item.getItemId() == android.R.id.home) { //액션바의 뒤로가기 버튼 클릭시 리뷰 리스트를 MovieDetailFragment의 리뷰 리스트와 동기화합니다.
             Intent intent = new Intent();
-            intent.putParcelableArrayListExtra("items", reviewAdapter.getReviewList());
+            intent.putParcelableArrayListExtra("reviewList", reviewAdapter.getReviewList());
             setResult(REQUEST_CODE_REVIEW_SEE, intent);
             finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() { //기기의 뒤로가기 버튼 클릭시 리뷰 리스트를 MovieDetailFragment의 리뷰 리스트와 동기화합니다.
+        Intent intent = new Intent();
+        intent.putParcelableArrayListExtra("reviewList", reviewAdapter.getReviewList());
+        setResult(REQUEST_CODE_REVIEW_SEE, intent);
+        super.onBackPressed();
     }
 }
