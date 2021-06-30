@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_user_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/user1"
+        app:civ_border_color="@color/gray_ffefefef"
+        app:civ_border_width="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_user_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="kym71**"
+        android:textColor="@color/black_ff000000"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/iv_user_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_user_comment_time_diff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="10"
+        app:layout_constraintStart_toEndOf="@id/iv_user_image"
+        app:layout_constraintTop_toBottomOf="@id/tv_user_id" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/_diff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/item_time_diff"
+        app:layout_constraintStart_toEndOf="@id/tv_user_comment_time_diff"
+        app:layout_constraintTop_toBottomOf="@id/tv_user_id" />
+
+    <androidx.appcompat.widget.AppCompatRatingBar
+        android:id="@+id/rb_user_grade"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:rating="5"
+        android:stepSize="0.1"
+        app:layout_constraintBottom_toBottomOf="@id/_diff"
+        app:layout_constraintStart_toEndOf="@id/_diff"
+        app:layout_constraintTop_toBottomOf="@id/tv_user_id" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_user_contents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="적당히 재밌다. 오랜만에 잠 안오는 영화 봤네요."
+        android:textColor="@color/black_ff000000"
+        app:layout_constraintStart_toEndOf="@id/iv_user_image"
+        app:layout_constraintTop_toBottomOf="@id/tv_user_comment_time_diff" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_user_recommend_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@id/iv_user_image"
+        app:layout_constraintTop_toBottomOf="@id/tv_user_contents">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/_recommend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_recommend"
+            android:textColor="@color/black_ff000000"
+            app:layout_constraintStart_toEndOf="@id/iv_user_image"
+            app:layout_constraintTop_toBottomOf="@id/tv_user_contents" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_user_recommend_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="0"
+            android:textColor="@color/black_ff000000"
+            app:layout_constraintStart_toEndOf="@id/_recommend"
+            app:layout_constraintTop_toBottomOf="@id/tv_user_contents" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/_slash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="|"
+        android:textColor="@color/black_ff000000"
+        app:layout_constraintStart_toEndOf="@id/ll_user_recommend_group"
+        app:layout_constraintTop_toBottomOf="@id/tv_user_contents" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/item_report"
+        app:layout_constraintStart_toEndOf="@id/_slash"
+        app:layout_constraintTop_toBottomOf="@id/tv_user_contents" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
