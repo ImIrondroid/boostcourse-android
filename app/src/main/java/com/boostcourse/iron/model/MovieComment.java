@@ -1,4 +1,4 @@
-package com.boostcourse.iron.data;
+package com.boostcourse.iron.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -17,7 +17,7 @@ import android.os.Parcelable;
  * }
  */
 
-public class MovieComment implements Parcelable {
+public class MovieComment extends MovieResponse implements Parcelable {
 
     private int id;
     private String writer;
@@ -28,6 +28,18 @@ public class MovieComment implements Parcelable {
     private float rating;
     private String contents;
     private int recommend;
+
+    public MovieComment(int id, String writer, int movieId, String writer_image, String time, long timestamp, float rating, String contents, int recommend) {
+        this.id = id;
+        this.writer = writer;
+        this.movieId = movieId;
+        this.writer_image = writer_image;
+        this.time = time;
+        this.timestamp = timestamp;
+        this.rating = rating;
+        this.contents = contents;
+        this.recommend = recommend;
+    }
 
     protected MovieComment(Parcel in) {
         id = in.readInt();

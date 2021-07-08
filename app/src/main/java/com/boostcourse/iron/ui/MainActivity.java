@@ -1,19 +1,17 @@
 package com.boostcourse.iron.ui;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.boostcourse.iron.R;
+import com.boostcourse.iron.manage.FinishListener;
+import com.boostcourse.iron.manage.MovieRepository;
+import com.boostcourse.iron.model.MovieResponse;
 import com.boostcourse.iron.ui.callback.FragmentCallback;
-import com.boostcourse.iron.data.MovieComment;
-import com.boostcourse.iron.data.MovieCommentResult;
-import com.boostcourse.iron.data.MovieDetail;
-import com.boostcourse.iron.data.MovieDetailResult;
-import com.boostcourse.iron.data.MovieInfo;
-import com.boostcourse.iron.data.MovieInfoResult;
+import com.boostcourse.iron.model.MovieInfo;
 import com.boostcourse.iron.network.Directory;
-import com.boostcourse.iron.network.GsonRequest;
-import com.boostcourse.iron.network.VolleyHelper;
 import com.boostcourse.iron.util.ToastUtil;
 import com.google.android.material.navigation.NavigationView;
 
@@ -28,15 +26,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback {
 
-    private AppFragmentFactory factory;
+    private MovieRepository repository;
     private FragmentManager manager;
     private DrawerLayout drawer;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +56,27 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        context = this;
         manager = getSupportFragmentManager();
         manager.setFragmentFactory(new AppFragmentFactory());
-        loadMovieInfoList();
+        repository = new MovieRepository(this);
+
+        repository.loadMovieList(new FinishListener() {
+            @Override
+            public void onFinish(List<? extends MovieResponse> result) {
+                showMovieListFragment((List<MovieInfo>) result);
+            }
+
+            @Override
+            public void onNext() {
+                loadMovieInfoList();
+            }
+
+            @Override
+            public void onError() {
+                ToastUtil.show(context, context.getString(R.string.please_connect_internet));
+            }
+        });
     }
 
     /**
@@ -88,11 +104,23 @@ public class MainActivity extends AppCompatActivity
     /**
      * MovieScreenFragment의 상세보기 버튼이 눌렸을 때 실행되는 콜백 메서드
      *
-     * @param id 영화 상세 정보를 조회하기 위한 Key를 전달하기 위한 파라미터
+     * @param movieId 영화 상세 정보를 조회하기 위한 Key를 전달하기 위한 파라미터
      */
     @Override
-    public void onClickedViewsDetailButton(int id) {
-        loadMovieDetail(id);
+    public void onClickedOnFragment(int movieId) {
+        loadMovieDetail(movieId);
+    }
+
+    /**
+     * Fragment에서 요청하는 데이터 처리
+     *
+     * @param type     URL 호출 타입
+     * @param bundle   저장 데이터
+     * @param listener 데이터 처리 후 이벤트 리스너
+     */
+    @Override
+    public void sendRequestOnFragment(Directory type, Bundle bundle, FinishListener listener) {
+        repository.loadMovieList(type, bundle, listener);
     }
 
     /**
@@ -101,80 +129,70 @@ public class MainActivity extends AppCompatActivity
     private void loadMovieInfoList() {
         showLoading();
 
-        Map<String, String> params = new HashMap<>();
-        params.put("type", "1");
-        VolleyHelper.getInstance(this).addRequest(
-                new GsonRequest<>(
-                        VolleyHelper.getUrl(Directory.MOVIE),
-                        MovieInfoResult.class,
-                        params,
-                        response -> {
-                            if (response.getCode() == VolleyHelper.RESPONSE_CODE) {
-                                showMovieListFragment(response.getResult());
-                            } else {
-                                ToastUtil.show(this, R.string.wrong_data_code);
-                            }
-                        },
-                        error -> {
-                            ToastUtil.show(this, R.string.error_occurred + error.getMessage());
-                        }
-                )
-        );
+        Bundle bundle = new Bundle();
+        bundle.putString("type", "1");
+
+        repository.loadMovieList(Directory.MOVIE, bundle, new FinishListener() {
+            @Override
+            public void onFinish(List<? extends MovieResponse> result) {
+                showMovieListFragment((List<MovieInfo>) result);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("loadMovieInfoList()", e.getMessage());
+            }
+        });
     }
 
     /**
      * MovieDetailFragment에 필요한 영화 상세 내용 조회
      *
-     * @param id 영화 상세 정보를 조회하기 위한 Key
+     * @param movieId 영화 아이디
      */
-    private void loadMovieDetail(int id) { //영화 id값으로 영화 상세 조회
-        Map<String, String> params = new HashMap<>();
-        params.put("id", String.valueOf(id));
-        VolleyHelper.getInstance(this).addRequest(
-                new GsonRequest<>(
-                        VolleyHelper.getUrl(Directory.DETAIL),
-                        MovieDetailResult.class,
-                        params,
-                        response -> {
-                            if (response.getCode() == VolleyHelper.RESPONSE_CODE) {
-                                loadMovieCommentList(response.getResult().get(0));
-                            } else {
-                                ToastUtil.show(this, R.string.wrong_data_code);
-                            }
-                        },
-                        error -> {
-                            ToastUtil.show(this, R.string.error_occurred + error.getMessage());
-                        }
-                )
-        );
+    private void loadMovieDetail(int movieId) {
+        Bundle bundle = new Bundle();
+        bundle.putString("movieId", String.valueOf(movieId));
+
+        repository.loadMovieList(Directory.DETAIL, bundle, new FinishListener() {
+            @Override
+            public void onFinish() {
+                loadMovieCommentList(movieId);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("loadMovieDetail()", e.getMessage());
+            }
+
+            @Override
+            public void onError() {
+                Log.e("loadMovieDetail()", getString(R.string.please_connect_internet));
+            }
+        });
     }
 
     /**
-     * MovieDetailFragment의 ViewPager2에 필요한 영화 한줄평 리스트 조회
+     * MovieDetailFragment의 ListView에 필요한 영화 한줄평 리스트 조회
      *
-     * @param movieDetail 영화 상세 내용
+     * @param movieId 영화 아이디
      */
-    private void loadMovieCommentList(MovieDetail movieDetail) { //영화 id값에 대한 한줄평 조회
-        Map<String, String> params = new HashMap<>();
-        params.put("id", String.valueOf(movieDetail.getId()));
-        params.put("limit", String.valueOf(20));
-        VolleyHelper.getInstance(this).addRequest(
-                new GsonRequest<>(
-                        VolleyHelper.getUrl(Directory.COMMENT),
-                        MovieCommentResult.class,
-                        params,
-                        response -> {
-                            if (response.getCode() == VolleyHelper.RESPONSE_CODE) {
-                                showMovieDetailFragment(movieDetail, response.getResult()); //코멘트 리스트가 잘 조회되었다면 데이터와 함께 영화 상세 화면으로 이동합니다.
-                            } else {
-                                ToastUtil.show(this, R.string.wrong_data_code);
-                            }
-                        },
-                        error -> {
-                            ToastUtil.show(this, R.string.error_occurred + error.getMessage());
-                        }
-                )
-        );
+    private void loadMovieCommentList(int movieId) {
+        Bundle bundle = new Bundle();
+        bundle.putString("movieId", String.valueOf(movieId));
+        bundle.putString("limit", String.valueOf(20));
+
+        repository.loadMovieList(Directory.COMMENT, bundle, new FinishListener() {
+            @Override
+            public void onFinish() {
+                showMovieDetailFragment(movieId);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("loadMovieCommentList()", e.getMessage());
+            }
+        });
     }
 
     /**
@@ -182,10 +200,10 @@ public class MainActivity extends AppCompatActivity
      *
      * @param movieList 영화 리스트
      */
-    private void showMovieListFragment(ArrayList<MovieInfo> movieList) {
+    private void showMovieListFragment(List<MovieInfo> movieList) {
         MovieListFragment listFragment = new MovieListFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("movieList", movieList);
+        bundle.putParcelableArrayList("movieList", new ArrayList<>(movieList));
         listFragment.setArguments(bundle);
         manager.beginTransaction().replace(R.id.container, listFragment).commit();
     }
@@ -193,14 +211,12 @@ public class MainActivity extends AppCompatActivity
     /**
      * MovieDetailFragment의 UI 작업에 필요한 영화 상세 내용 전달
      *
-     * @param movieDetail 영화 상세 내용
-     * @param commentList 한줄평 리스트
+     * @param movieId 영화 아이디
      */
-    private void showMovieDetailFragment(MovieDetail movieDetail, ArrayList<MovieComment> commentList) {
+    private void showMovieDetailFragment(int movieId) {
         Fragment movieDetailFragment = manager.getFragmentFactory().instantiate(getClassLoader(), MovieDetailFragment.class.getName());
         Bundle bundle = new Bundle();
-        bundle.putParcelable("movieDetail", movieDetail);
-        bundle.putParcelableArrayList("movieCommentList", commentList);
+        bundle.putInt("movieId", movieId);
         movieDetailFragment.setArguments(bundle);
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.container, movieDetailFragment);
@@ -212,7 +228,8 @@ public class MainActivity extends AppCompatActivity
      * 네트워크 통신이 시작되면 ProgressBar 로딩이 시작되고 데이터가 조회되면 종료됩니다.
      */
     private void showLoading() {
-        Fragment loadingDialogFragment = (LoadingFragment) manager.getFragmentFactory().instantiate(getClassLoader(), LoadingFragment.class.getName());
+        Fragment loadingDialogFragment =
+                (LoadingFragment) manager.getFragmentFactory().instantiate(getClassLoader(), LoadingFragment.class.getName());
         manager.beginTransaction().replace(R.id.container, loadingDialogFragment).commit();
     }
 }

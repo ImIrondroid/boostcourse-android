@@ -1,5 +1,6 @@
 package com.boostcourse.iron.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -20,30 +20,30 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 
 import com.boostcourse.iron.R;
-import com.boostcourse.iron.data.MovieComment;
-import com.boostcourse.iron.data.MovieDetail;
-import com.boostcourse.iron.data.MovieResponse;
+import com.boostcourse.iron.manage.DatabaseManager;
+import com.boostcourse.iron.manage.FinishListener;
+import com.boostcourse.iron.model.MovieComment;
+import com.boostcourse.iron.model.MovieDetail;
 import com.boostcourse.iron.network.Directory;
-import com.boostcourse.iron.network.GsonRequest;
-import com.boostcourse.iron.network.VolleyHelper;
-import com.boostcourse.iron.util.ToastUtil;
+import com.boostcourse.iron.ui.callback.FragmentCallback;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MovieDetailFragment extends Fragment implements CommentAdapter.CommentCallback {
 
+    private DatabaseManager databaseManager;
     private CommentAdapter commentAdapter;
     private MovieDetail movieDetail;
+    private FragmentCallback callback;
 
     private ListView lvMovieComment;
     private ImageView ivMovieImage;
     private ImageView ivMovieAgeLimit;
+    private ImageView ivMovieLike;
+    private ImageView ivMovieDislike;
     private TextView tvMovieDate;
     private TextView tvMovieTitle;
     private TextView tvMovieGenre;
@@ -60,8 +60,6 @@ public class MovieDetailFragment extends Fragment implements CommentAdapter.Comm
     private TextView tvMovieDirector;
     private TextView tvMovieActor;
     private RatingBar rbMovieUserRating;
-    private Button btnMovieLike;
-    private Button btnMovieDislike;
 
     /**
      * 영상에 나오는 방식의 startActivityForResult()메서드가 Deprecated여서 새로운 API를 적용해 보았습니다.
@@ -74,18 +72,18 @@ public class MovieDetailFragment extends Fragment implements CommentAdapter.Comm
                     if (result.getResultCode() == CommentWriteActivity.REQUEST_CODE_COMMENT_WRITE) { //from CommentWriteActivity
                         Intent intent = result.getData();
                         if (intent != null) {
-                            ArrayList<MovieComment> arrayList = intent.getParcelableArrayListExtra("movieCommentList");
+                            ArrayList<MovieComment> commentList = intent.getParcelableArrayListExtra("commentList");
                             int size = commentAdapter.getCount(); //추가되기 전 아이템 개수입니다.
-                            commentAdapter.setMovieCommentList(arrayList);
+                            commentAdapter.setMovieCommentList(commentList);
                             if (size < CommentAdapter.PREVIEW_ITEM_MAX_SIZE)
                                 setListViewLimitedHeight(); //노출시킬 아이템의 개수가 ITEM_MAX_SIZE개 이하이면 뷰의 높이를 다시 측정하여 적용합니다.
                         }
                     } else if (result.getResultCode() == CommentSeeActivity.REQUEST_CODE_COMMENT_SEE) { //from CommentSeeActivity
                         Intent intent = result.getData();
                         if (intent != null) {
-                            ArrayList<MovieComment> items = intent.getParcelableArrayListExtra("movieCommentList");
+                            ArrayList<MovieComment> commentList = intent.getParcelableArrayListExtra("commentList");
                             int size = commentAdapter.getCount(); //추가되기 전 아이템 개수입니다.
-                            commentAdapter.setMovieCommentList(items);
+                            commentAdapter.setMovieCommentList(commentList);
                             if (size < CommentAdapter.PREVIEW_ITEM_MAX_SIZE)
                                 setListViewLimitedHeight(); //노출시킬 아이템의 개수가 ITEM_MAX_SIZE개 이하이면 뷰의 높이를 다시 측정하여 적용합니다.
                         }
@@ -93,6 +91,14 @@ public class MovieDetailFragment extends Fragment implements CommentAdapter.Comm
                 }
             }
     );
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof FragmentCallback) {
+            callback = (FragmentCallback) context;
+        }
+    }
 
     @Nullable
     @Override
@@ -105,10 +111,18 @@ public class MovieDetailFragment extends Fragment implements CommentAdapter.Comm
         return rootView;
     }
 
+    @Override
+    public void onStop() {
+        databaseManager.saveCommentList(commentAdapter.getMovieCommentList());
+        super.onStop();
+    }
+
     private void viewInit(ViewGroup rootView) {
         lvMovieComment = (ListView) rootView.findViewById(R.id.lv_movie_comment);
         ivMovieImage = (ImageView) rootView.findViewById(R.id.iv_movie_image);
         ivMovieAgeLimit = (ImageView) rootView.findViewById(R.id.iv_movie_age_limit);
+        ivMovieLike = (ImageView) rootView.findViewById(R.id.iv_movie_like);
+        ivMovieDislike = (ImageView) rootView.findViewById(R.id.iv_movie_dislike);
         tvMovieDate = (TextView) rootView.findViewById(R.id.tv_movie_date);
         tvMovieTitle = (TextView) rootView.findViewById(R.id.tv_movie_title);
         tvMovieGenre = (TextView) rootView.findViewById(R.id.tv_movie_genre);
@@ -125,66 +139,71 @@ public class MovieDetailFragment extends Fragment implements CommentAdapter.Comm
         tvMovieDirector = (TextView) rootView.findViewById(R.id.tv_movie_director);
         tvMovieActor = (TextView) rootView.findViewById(R.id.tv_movie_actor);
         rbMovieUserRating = (RatingBar) rootView.findViewById(R.id.rb_movie_user_rating);
-        btnMovieLike = (Button) rootView.findViewById(R.id.btn_movie_like);
-        btnMovieDislike = (Button) rootView.findViewById(R.id.btn_movie_dislike);
 
+        databaseManager = new DatabaseManager(requireActivity());
         Bundle bundle = getArguments();
-        ArrayList<MovieComment> arrayList;
         commentAdapter = new CommentAdapter(requireActivity());
-        if (bundle != null) { //MovieScreenFragment 클릭시 MainActivity에서 데이터를 전달합니다. (영화 상세 정보 및 한줄평 리스트)
-            movieDetail = (MovieDetail) bundle.getParcelable("movieDetail");
-            if (movieDetail != null) {
-                tvMovieTitle.setText(movieDetail.getTitle());
-                tvMovieDate.setText(movieDetail.getDate());
-                tvMovieGenre.setText(movieDetail.getGenre());
-                tvMovieDuration.setText(String.valueOf(movieDetail.getDuration()));
-                tvMovieLikeCount.setText(String.valueOf(movieDetail.getLike()));
-                tvMovieDislikeCount.setText(String.valueOf(movieDetail.getDislike()));
-                tvMovieRank.setText(String.valueOf(movieDetail.getId()));
-                tvMovieReservationRate.setText(String.valueOf(movieDetail.getReservation_rate()));
-                rbMovieUserRating.setRating(movieDetail.getUser_rating());
-                tvMovieAudienceRating.setText(String.valueOf(movieDetail.getAudience_rating()));
-                tvMovieAudience.setText(movieDetail.getAudience());
-                tvMovieSynopsis.setText(movieDetail.getSynopsis());
-                tvMovieDirector.setText(movieDetail.getDirector());
-                tvMovieActor.setText(movieDetail.getActor());
+        if (bundle != null) {
+            int movieId = bundle.getInt("movieId", Integer.MIN_VALUE);
+            if (movieId != Integer.MIN_VALUE) {
+                movieDetail = databaseManager.getMovieDetail(movieId);
+                if (movieDetail != null) {
+                    tvMovieTitle.setText(movieDetail.getTitle());
+                    tvMovieDate.setText(movieDetail.getDate());
+                    tvMovieGenre.setText(movieDetail.getGenre());
+                    tvMovieDuration.setText(String.valueOf(movieDetail.getDuration()));
+                    tvMovieLikeCount.setText(String.valueOf(movieDetail.getLike()));
+                    tvMovieDislikeCount.setText(String.valueOf(movieDetail.getDislike()));
+                    tvMovieRank.setText(String.valueOf(movieDetail.getId()));
+                    tvMovieReservationRate.setText(String.valueOf(movieDetail.getReservation_rate()));
+                    rbMovieUserRating.setRating(movieDetail.getUser_rating());
+                    tvMovieAudienceRating.setText(String.valueOf(movieDetail.getAudience_rating()));
+                    tvMovieAudience.setText(movieDetail.getAudience());
+                    tvMovieSynopsis.setText(movieDetail.getSynopsis());
+                    tvMovieDirector.setText(movieDetail.getDirector());
+                    tvMovieActor.setText(movieDetail.getActor());
+                    if (movieDetail.isLiked())
+                        Glide.with(requireActivity()).load(R.drawable.ic_thumb_up_selected).into(ivMovieLike);
+                    if (movieDetail.isDisliked())
+                        Glide.with(requireActivity()).load(R.drawable.ic_thumb_down_selected).into(ivMovieDislike);
 
-                int grade = movieDetail.getGrade();
-                int gradeId = R.drawable.ic_all;
-                if (grade == 12) {
-                    gradeId = R.drawable.ic_12;
-                } else if (grade == 15) {
-                    gradeId = R.drawable.ic_15;
-                } else if (grade == 19) {
-                    gradeId = R.drawable.ic_19;
+                    int grade = movieDetail.getGrade();
+                    int gradeId = R.drawable.ic_all;
+                    if (grade == 12) {
+                        gradeId = R.drawable.ic_12;
+                    } else if (grade == 15) {
+                        gradeId = R.drawable.ic_15;
+                    } else if (grade == 19) {
+                        gradeId = R.drawable.ic_19;
+                    }
+                    Glide.with(requireActivity()).load(gradeId).into(ivMovieAgeLimit);
+                    Glide.with(requireActivity()).load(movieDetail.getThumb()).placeholder(R.drawable.image_not_available).into(ivMovieImage);
                 }
-                Glide.with(requireActivity()).load(gradeId).into(ivMovieAgeLimit);
-                Glide.with(requireActivity()).load(movieDetail.getThumb()).placeholder(R.drawable.image_not_available).into(ivMovieImage);
-            }
 
-            arrayList = bundle.getParcelableArrayList("movieCommentList");
-            if (arrayList != null) {
-                commentAdapter.addAll(arrayList);
-                commentAdapter.setRecommendCallbackListener(this);
-                lvMovieComment.setAdapter(commentAdapter);
-                setListViewLimitedHeight();
+                ArrayList<MovieComment> arrayList = new ArrayList<>(databaseManager.getMovieCommentList(movieId));
+                if (arrayList.size() != 0) {
+                    commentAdapter.addAll(arrayList);
+                    commentAdapter.setRecommendCallbackListener(this);
+                    lvMovieComment.setAdapter(commentAdapter);
+                    setListViewLimitedHeight();
+                }
             }
         }
     }
 
     private void viewEvent() {
-        btnMovieLike.setOnClickListener(view -> {
+        ivMovieLike.setOnClickListener(view -> {
             updateLike();
         });
 
-        btnMovieDislike.setOnClickListener(view -> {
+        ivMovieDislike.setOnClickListener(view -> {
             updateDislike();
         });
 
         tvSeeComment.setOnClickListener(view -> { //모두 보기 화면으로 리뷰 리스트와 함께 전환합니다.
             Intent intent = new Intent(requireActivity(), CommentSeeActivity.class);
             if (commentAdapter.getCount() != 0)
-                intent.putParcelableArrayListExtra("movieCommentList", commentAdapter.getMovieCommentList());
+                intent.putParcelableArrayListExtra("commentList", commentAdapter.getMovieCommentList());
             if (movieDetail != null)
                 intent.putExtra("movieId", movieDetail.getId()); //한줄평 리스트 업데이트를 위해 영화 ID 전달하기
             startActivityResult.launch(intent);
@@ -222,24 +241,24 @@ public class MovieDetailFragment extends Fragment implements CommentAdapter.Comm
      */
     private void updateLike() {
         if (movieDetail.isLiked()) {
-            btnMovieLike.setBackgroundResource(R.drawable.ic_thumb_up);
+            Glide.with(requireActivity()).load(R.drawable.ic_thumb_up).into(ivMovieLike);
             movieDetail.setLike(movieDetail.getLike() - 1);
         } else {
-            btnMovieLike.setBackgroundResource(R.drawable.ic_thumb_up_selected);
+            Glide.with(requireActivity()).load(R.drawable.ic_thumb_up_selected).into(ivMovieLike);
             movieDetail.setLike(movieDetail.getLike() + 1);
+
+            if (movieDetail.isDisliked()) {
+                Glide.with(requireActivity()).load(R.drawable.ic_thumb_down).into(ivMovieDislike);
+                movieDetail.setDislike(movieDetail.getDislike() - 1);
+                tvMovieDislikeCount.setText(String.valueOf(movieDetail.getDislike()));
+                movieDetail.setDisliked(false);
+            }
         }
         tvMovieLikeCount.setText(String.valueOf(movieDetail.getLike()));
 
         movieDetail.setLiked(!movieDetail.isLiked());
 
-        if (movieDetail.isDisliked()) { //싫어요를 눌렀는지 먼저 체크해줍니다.
-            btnMovieDislike.setBackgroundResource(R.drawable.ic_thumb_down);
-            movieDetail.setDislike(movieDetail.getDislike() - 1);
-            tvMovieDislikeCount.setText(String.valueOf(movieDetail.getDislike()));
-            movieDetail.setDisliked(false);
-        }
-
-        applyLikeDislikeSync(0);
+        applyLikeDislikeSync();
     }
 
     /**
@@ -247,65 +266,49 @@ public class MovieDetailFragment extends Fragment implements CommentAdapter.Comm
      */
     private void updateDislike() {
         if (movieDetail.isDisliked()) {
-            btnMovieDislike.setBackgroundResource(R.drawable.ic_thumb_down);
+            Glide.with(requireActivity()).load(R.drawable.ic_thumb_down).into(ivMovieDislike);
             movieDetail.setDislike(movieDetail.getDislike() - 1);
         } else {
-            btnMovieDislike.setBackgroundResource(R.drawable.ic_thumb_down_selected);
+            Glide.with(requireActivity()).load(R.drawable.ic_thumb_down_selected).into(ivMovieDislike);
             movieDetail.setDislike(movieDetail.getDislike() + 1);
+
+            if (movieDetail.isLiked()) {
+                Glide.with(requireActivity()).load(R.drawable.ic_thumb_up).into(ivMovieLike);
+                movieDetail.setLike(movieDetail.getLike() - 1);
+                tvMovieLikeCount.setText(String.valueOf(movieDetail.getLike()));
+                movieDetail.setLiked(false);
+            }
         }
         tvMovieDislikeCount.setText(String.valueOf(movieDetail.getDislike()));
 
         movieDetail.setDisliked(!movieDetail.isDisliked());
 
-        if (movieDetail.isLiked()) { //좋아요를 눌렀는지 먼저 체크해줍니다.
-            btnMovieLike.setBackgroundResource(R.drawable.ic_thumb_up);
-            movieDetail.setLike(movieDetail.getLike() - 1);
-            tvMovieLikeCount.setText(String.valueOf(movieDetail.getLike()));
-            movieDetail.setLiked(false);
-        }
-
-        applyLikeDislikeSync(0);
+        applyLikeDislikeSync();
     }
 
     /**
-     * DFS 알고리즘을 적용하여 네트워크 통신을 동기적으로 처리하였습니다.
-     *
-     * DB를 이용한다면 한 번의 업데이트로 좋아요, 싫어요를 업데이트 할 수 있겠지만,
-     * 하나의 URL에 likeyn과 dislikeyn을 모두 포함하여 처리할 수 없는 것을 확인하였습니다.
-     * 둘 중 마지막 응답에 대한 처리를 고민해보다가 응답 처리가 가능하게 동기적으로 처리할 수 있게 접근해 보았습니다.
-     *
-     * --> Volley Library에서 비동기로 처리되는 스레드를 제어할 수 있는 방법이 있는지 궁금합니다. <--
-     *
-     * @param next 0: 좋아요 서버 저장, 1: 싫어요 서버 저장, 2: 종료
+     * 좋아요나 싫어요가 눌리면 서버에 저장합니다.
      */
-    private void applyLikeDislikeSync(int next) {
-        if (next == 2) return;
+    private void applyLikeDislikeSync() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("movieDetail", movieDetail);
+        bundle.putString("id", String.valueOf(movieDetail.getId()));
+        if (movieDetail.isLiked()) bundle.putString("likeyn", "Y");
+        else bundle.putString("likeyn", "N");
+        if (movieDetail.isDisliked()) bundle.putString("dislikeyn", "Y");
+        else bundle.putString("dislikeyn", "N");
 
-        Map<String, String> params = new HashMap<>();
-        params.put("id", String.valueOf(movieDetail.getId()));
-        if (next == 0) {
-            params.put("likeyn", movieDetail.isLiked() ? "Y" : "N");
-        } else if (next == 1) {
-            params.put("dislikeyn", movieDetail.isDisliked() ? "Y" : "N");
-        }
+        callback.sendRequestOnFragment(Directory.LIKE, bundle, new FinishListener() {
+            @Override
+            public void onFinish() {
+                databaseManager.saveLikeDislike(movieDetail);
+            }
 
-        VolleyHelper.getInstance(requireActivity()).addRequest(
-                new GsonRequest<>(
-                        VolleyHelper.getUrl(Directory.LIKE),
-                        MovieResponse.class,
-                        params,
-                        response -> {
-                            if (response.getCode() == VolleyHelper.RESPONSE_CODE) {
-                                applyLikeDislikeSync(next + 1);
-                            } else {
-                                ToastUtil.show(requireActivity(), R.string.wrong_data_code);
-                            }
-                        },
-                        error -> {
-                            ToastUtil.show(requireActivity(), R.string.error_occurred + error.getMessage());
-                        }
-                )
-        );
+            @Override
+            public void onError(Exception e) {
+                Log.e("applyLikeDislikeSync()", e.getMessage());
+            }
+        });
     }
 
     /**
@@ -315,28 +318,24 @@ public class MovieDetailFragment extends Fragment implements CommentAdapter.Comm
      * @param position 한줄평 리스트의 인덱스
      */
     @Override
-    public void onClickedRecommendItem(int position) {
-        Map<String, String> params = new HashMap<>();
+    public void onClickedItemRecommend(int position) {
         MovieComment movieComment = (MovieComment) commentAdapter.getItem(position);
-        params.put("review_id", String.valueOf(movieComment.getId()));
-        VolleyHelper.getInstance(requireActivity()).addRequest(
-                new GsonRequest<>(
-                        VolleyHelper.getUrl(Directory.RECOMMEND),
-                        MovieResponse.class,
-                        params,
-                        response -> {
-                            if (response.getCode() == VolleyHelper.RESPONSE_CODE) {
-                                int updateRecommend = movieComment.getRecommend() + 1;
-                                movieComment.setRecommend(updateRecommend);
-                                commentAdapter.setMovieComment(position, movieComment);
-                            } else {
-                                ToastUtil.show(requireActivity(), R.string.wrong_data_code);
-                            }
-                        },
-                        error -> {
-                            ToastUtil.show(requireActivity(), R.string.error_occurred + error.getMessage());
-                        }
-                )
-        );
+        Bundle bundle = new Bundle();
+        bundle.putString("review_id", String.valueOf(movieComment.getId()));
+
+        callback.sendRequestOnFragment(Directory.RECOMMEND, bundle, new FinishListener() {
+            @Override
+            public void onFinish() {
+                int updateRecommend = movieComment.getRecommend() + 1;
+                movieComment.setRecommend(updateRecommend);
+                commentAdapter.setMovieComment(position, movieComment);
+                databaseManager.saveRecommend(movieComment);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("onClickedRecommendItem()", e.getMessage());
+            }
+        });
     }
 }

@@ -5,26 +5,25 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 
 import com.boostcourse.iron.R;
-import com.boostcourse.iron.data.MovieComment;
-import com.boostcourse.iron.data.MovieCommentResult;
-import com.boostcourse.iron.data.MovieResponse;
+import com.boostcourse.iron.manage.FinishListener;
+import com.boostcourse.iron.manage.MovieRepository;
+import com.boostcourse.iron.model.MovieComment;
+import com.boostcourse.iron.model.MovieResponse;
 import com.boostcourse.iron.network.Directory;
-import com.boostcourse.iron.network.GsonRequest;
-import com.boostcourse.iron.network.VolleyHelper;
-import com.boostcourse.iron.util.ToastUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class CommentWriteActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_COMMENT_WRITE = 101;
+    private MovieRepository repository;
 
     private int movieId;
 
@@ -56,6 +55,8 @@ public class CommentWriteActivity extends AppCompatActivity {
         if (intent != null) {
             movieId = intent.getIntExtra("movieId", 0);
         }
+
+        repository = new MovieRepository(this);
     }
 
     private void viewEvent() {
@@ -72,59 +73,45 @@ public class CommentWriteActivity extends AppCompatActivity {
      * 임의의 ID로 설정하여 선택된 영화에 한줄평을 작성합니다.
      */
     private void saveComment() {
-        String writer = "tester";
-        float rating = rbCommentGrade.getRating();
-        String contents = etCommentText.getText().toString().isEmpty() ? //contents를 빈값으로 보내면 400 에러가 발생하여 기본값으로 설정하였습니다.
-                getString(R.string.default_comment_message) : etCommentText.getText().toString();
+        Bundle bundle = new Bundle();
+        bundle.putString("movieId", String.valueOf(movieId));
+        bundle.putString("writer", getString(R.string.app_nickname));
+        bundle.putString("rating", String.valueOf(rbCommentGrade.getRating()));
+        bundle.putString("contents", etCommentText.getText().toString().isEmpty() ?
+                getString(R.string.default_comment_message) : etCommentText.getText().toString()); //contents를 빈값으로 보내면 400 에러가 발생하여 기본값으로 설정하였습니다.
 
-        Map<String, String> params = new HashMap<>();
-        params.put("id", String.valueOf(movieId));
-        params.put("writer", writer);
-        params.put("rating", String.valueOf(rating));
-        params.put("contents", contents);
-        VolleyHelper.getInstance(this).addRequest(
-                new GsonRequest<>(
-                        VolleyHelper.getUrl(Directory.CREATE),
-                        MovieResponse.class,
-                        params,
-                        response -> {
-                            if (response.getCode() == VolleyHelper.RESPONSE_CODE) {
-                                reloadCommentList();
-                            } else {
-                                ToastUtil.show(this, R.string.wrong_data_code);
-                            }
-                        },
-                        error -> {
-                            ToastUtil.show(this, R.string.error_occurred + error.getMessage());
-                        }
-                )
-        );
+        repository.loadMovieList(Directory.CREATE, bundle, new FinishListener() {
+            @Override
+            public void onFinish() {
+                reloadCommentList();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("saveComment()", e.getMessage());
+            }
+        });
     }
 
     /**
-     * 선택된 영화에 대한 한줄평 조회합니다.
+     * 선택된 영화의 한줄평을 조회합니다.
      */
     private void reloadCommentList() {
-        Map<String, String> params = new HashMap<>();
-        params.put("id", String.valueOf(movieId));
-        params.put("limit", String.valueOf(20));
-        VolleyHelper.getInstance(this).addRequest(
-                new GsonRequest<>(
-                        VolleyHelper.getUrl(Directory.COMMENT),
-                        MovieCommentResult.class,
-                        params,
-                        response -> {
-                            if (response.getCode() == VolleyHelper.RESPONSE_CODE) {
-                                backToMovieDetailFragmentWithData(response.getResult());
-                            } else {
-                                ToastUtil.show(this, R.string.wrong_data_code);
-                            }
-                        },
-                        error -> {
-                            ToastUtil.show(this, R.string.error_occurred + error.getMessage());
-                        }
-                )
-        );
+        Bundle bundle = new Bundle();
+        bundle.putString("movieId", String.valueOf(movieId));
+        bundle.putString("limit", String.valueOf(20));
+
+        repository.loadMovieList(Directory.COMMENTSEND, bundle, new FinishListener() {
+            @Override
+            public void onFinish(List<? extends MovieResponse> result) {
+                onBackPressedWithData((List<MovieComment>) result);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("reloadCommentList()", e.getMessage());
+            }
+        });
     }
 
     /**
@@ -132,9 +119,9 @@ public class CommentWriteActivity extends AppCompatActivity {
      *
      * @param commentList 한줄평 리스트
      */
-    private void backToMovieDetailFragmentWithData(ArrayList<MovieComment> commentList) {
+    private void onBackPressedWithData(List<MovieComment> commentList) {
         Intent intent = new Intent();
-        intent.putParcelableArrayListExtra("movieCommentList", commentList);
+        intent.putParcelableArrayListExtra("commentList", new ArrayList<>(commentList));
         setResult(REQUEST_CODE_COMMENT_WRITE, intent);
         finish();
     }

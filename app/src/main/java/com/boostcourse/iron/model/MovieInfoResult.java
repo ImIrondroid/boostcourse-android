@@ -1,13 +1,13 @@
-package com.boostcourse.iron.data;
+package com.boostcourse.iron.model;
 
 import java.util.ArrayList;
 
-public class MovieCommentResult {
+public class MovieInfoResult extends MovieResponse {
 
     private String message;
     private int code;
     private String resultType;
-    private ArrayList<MovieComment> result;
+    private ArrayList<MovieInfo> result;
 
     public String getMessage() {
         return message;
@@ -33,17 +33,17 @@ public class MovieCommentResult {
         this.resultType = resultType;
     }
 
-    public ArrayList<MovieComment> getResult() {
+    public ArrayList<MovieInfo> getResult() {
         return result;
     }
 
-    public void setResult(ArrayList<MovieComment> result) {
+    public void setResult(ArrayList<MovieInfo> result) {
         this.result = result;
     }
 
     @Override
     public String toString() {
-        return "MovieCommentList{" +
+        return "MovieInfoResult{" +
                 "message='" + message + '\'' +
                 ", code=" + code +
                 ", resultType='" + resultType + '\'' +

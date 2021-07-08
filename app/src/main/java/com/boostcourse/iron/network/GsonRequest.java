@@ -22,8 +22,7 @@ public class GsonRequest<T> extends Request<T> {
     private final Response.Listener<T> listener;
 
     public GsonRequest(String url, Class<T> clazz, Map<String, String> params,
-                       Response.Listener<T> listener,
-                       Response.ErrorListener errorListener) {
+                       Response.Listener<T> listener, Response.ErrorListener errorListener) {
         super(Method.POST, url, errorListener);
         this.clazz = clazz;
         this.params = params;
@@ -54,9 +53,7 @@ public class GsonRequest<T> extends Request<T> {
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-            return Response.success(
-                    gson.fromJson(json, clazz),
-                    HttpHeaderParser.parseCacheHeaders(response));
+            return Response.success(gson.fromJson(json, clazz), HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException | JsonSyntaxException e) {
             return Response.error(new ParseError(e));
         }

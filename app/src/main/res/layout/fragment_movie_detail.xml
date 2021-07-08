@@ -82,7 +82,7 @@
                 android:text="액션"
                 android:textColor="@color/white_ffffffff"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/btn_movie_like"
+                app:layout_constraintBottom_toTopOf="@id/iv_movie_like"
                 app:layout_constraintStart_toEndOf="@id/iv_movie_image" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -94,7 +94,7 @@
                 android:text="/"
                 android:textColor="@color/white_ffffffff"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/btn_movie_like"
+                app:layout_constraintBottom_toTopOf="@id/iv_movie_like"
                 app:layout_constraintStart_toEndOf="@id/tv_movie_genre" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -106,7 +106,7 @@
                 android:text="137"
                 android:textColor="@color/white_ffffffff"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/btn_movie_like"
+                app:layout_constraintBottom_toTopOf="@id/iv_movie_like"
                 app:layout_constraintStart_toEndOf="@id/_slash" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -119,8 +119,8 @@
                 app:layout_constraintStart_toEndOf="@id/tv_movie_duration"
                 app:layout_constraintTop_toTopOf="@id/tv_movie_duration" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_movie_like"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_movie_like"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="16dp"
@@ -139,10 +139,10 @@
                 android:textColor="@color/white_ffffffff"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/iv_movie_image"
-                app:layout_constraintStart_toEndOf="@id/btn_movie_like" />
+                app:layout_constraintStart_toEndOf="@id/iv_movie_like" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_movie_dislike"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_movie_dislike"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="16dp"
@@ -161,7 +161,7 @@
                 android:textColor="@color/white_ffffffff"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/iv_movie_image"
-                app:layout_constraintStart_toEndOf="@id/btn_movie_dislike" />
+                app:layout_constraintStart_toEndOf="@id/iv_movie_dislike" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

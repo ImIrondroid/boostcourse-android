@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.boostcourse.iron.data.MovieInfo;
+import com.boostcourse.iron.model.MovieInfo;
 import com.boostcourse.iron.R;
 import com.boostcourse.iron.ui.callback.FragmentCallback;
 import com.bumptech.glide.Glide;
@@ -39,13 +39,13 @@ public class MovieScreenFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if(context instanceof FragmentCallback) {
+        if (context instanceof FragmentCallback) {
             callback = (FragmentCallback) context;
         }
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup)  inflater.inflate(R.layout.fragment_movie_screen, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_movie_screen, container, false);
 
         viewInit(rootView);
         viewEvent();
@@ -63,7 +63,7 @@ public class MovieScreenFragment extends Fragment {
         btnMovieDetail = (Button) rootView.findViewById(R.id.btn_movie_detail);
 
         Bundle bundle = getArguments();
-        if(bundle != null) {
+        if (bundle != null) {
             movieInfo = bundle.getParcelable("movieInfo");
 
             Glide.with(requireActivity()).load(movieInfo.getImage()).placeholder(R.drawable.image_not_available).into(ivMovieImage);
@@ -77,7 +77,7 @@ public class MovieScreenFragment extends Fragment {
 
     private void viewEvent() {
         btnMovieDetail.setOnClickListener(view -> {
-            if(callback != null) callback.onClickedViewsDetailButton(movieInfo.getId());
+            if (callback != null) callback.onClickedOnFragment(movieInfo.getId());
         });
     }
 
@@ -99,7 +99,7 @@ public class MovieScreenFragment extends Fragment {
             long diffTime = todayTime - releaseTime;
             long divider = 24 * 60 * 60 * 1000;
             long realTime = diffTime / divider;
-            if(realTime > 0) { //오늘 이전에 개봉한 영화인 경우
+            if (realTime > 0) { //오늘 이전에 개봉한 영화인 경우
                 dDay = "D-" + (diffTime / divider);
             } else if (realTime < 0) { //오늘 이후로 개봉할 영화인 경우
                 dDay = "D+" + Math.abs(diffTime / divider);

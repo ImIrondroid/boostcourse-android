@@ -11,7 +11,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.boostcourse.iron.R;
-import com.boostcourse.iron.data.MovieComment;
+import com.boostcourse.iron.model.MovieComment;
 import com.bumptech.glide.Glide;
 
 import java.text.ParseException;
@@ -26,7 +26,7 @@ public class CommentAdapter extends BaseAdapter {
 
     @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-    private ArrayList<MovieComment> items = new ArrayList<>();
+    private ArrayList<MovieComment> commentList = new ArrayList<>();
     public static final int PREVIEW_ITEM_MAX_SIZE = 3; //MovieDetailFragment에서 보여질 아이템의 최대 개수
 
     private TextView tvUserId;
@@ -38,7 +38,7 @@ public class CommentAdapter extends BaseAdapter {
     private RatingBar rbUserGrade;
 
     public interface CommentCallback {
-        void onClickedRecommendItem(int position);
+        void onClickedItemRecommend(int position);
     }
 
     public void setRecommendCallbackListener(CommentCallback callback) {
@@ -50,36 +50,37 @@ public class CommentAdapter extends BaseAdapter {
     }
 
     public void addComment(MovieComment movieComment) {
-        this.items.add(movieComment);
+        this.commentList.add(movieComment);
         notifyDataSetChanged();
     }
 
     public void addAll(ArrayList<MovieComment> items) {
-        this.items.addAll(items);
+        this.commentList.addAll(items);
         notifyDataSetChanged();
     }
 
     public void setMovieComment(int position, MovieComment movieComment) {
-        this.items.set(position, movieComment);
+        this.commentList.set(position, movieComment);
         notifyDataSetChanged();
     }
-    public void setMovieCommentList(ArrayList<MovieComment> items) {
-        this.items = items;
+
+    public void setMovieCommentList(ArrayList<MovieComment> commentList) {
+        this.commentList = commentList;
         notifyDataSetChanged(); //어댑터에게 데이터가 바뀌었다는 알림을 통해 다음 에러를 해결합니다. The content of the adapter has changed but ListView did not receive a notification.
     }
 
     public ArrayList<MovieComment> getMovieCommentList() {
-        return this.items;
+        return this.commentList;
     }
 
     @Override
     public int getCount() {
-        return items.size();
+        return commentList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return items.get(position);
+        return commentList.get(position);
     }
 
     @Override
@@ -115,15 +116,15 @@ public class CommentAdapter extends BaseAdapter {
             holder = (CommentViewHolder) convertView.getTag();
         }
 
-        MovieComment item = items.get(position);
-        holder.tvUserId.setText(item.getWriter());
-        holder.tvUserContents.setText(item.getContents());
-        holder.tvUserRecommendCount.setText(String.valueOf(item.getRecommend()));
-        holder.tvUserCommentTimeDiff.setText(convertToFormatTime(item.getTime()));
-        Glide.with(convertView.getContext()).load(item.getWriter_image()).into(holder.ivUserImage);
-        holder.rbUserGrade.setRating(item.getRating());
+        MovieComment movieComment = commentList.get(position);
+        holder.tvUserId.setText(movieComment.getWriter());
+        holder.tvUserContents.setText(movieComment.getContents());
+        holder.tvUserRecommendCount.setText(String.valueOf(movieComment.getRecommend()));
+        holder.tvUserCommentTimeDiff.setText(convertToFormatTime(movieComment.getTime()));
+        Glide.with(convertView.getContext()).load(movieComment.getWriter_image()).into(holder.ivUserImage);
+        holder.rbUserGrade.setRating(movieComment.getRating());
         holder.llUserRecommendGroup.setOnClickListener(view -> {
-            if(callback != null) callback.onClickedRecommendItem(position);
+            if(callback != null) callback.onClickedItemRecommend(position);
         });
 
         return convertView;

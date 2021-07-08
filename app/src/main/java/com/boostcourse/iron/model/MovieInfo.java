@@ -1,4 +1,4 @@
-package com.boostcourse.iron.data;
+package com.boostcourse.iron.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -22,7 +22,7 @@ import android.os.Parcelable;
  * }
  */
 
-public class MovieInfo implements Parcelable {
+public class MovieInfo extends MovieResponse implements Parcelable {
 
     private int id;
     private String title;
@@ -36,6 +36,22 @@ public class MovieInfo implements Parcelable {
     private int grade;
     private String thumb;
     private String image;
+
+    public MovieInfo(int id, String title, String title_eng, String date, float user_rating, float audience_rating, float review_rating, float reservation_rate, int reservation_grade, int grade, String thumb, String image) {
+        this.id = id;
+        this.title = title;
+        this.title_eng = title_eng;
+        this.date = date;
+        this.user_rating = user_rating;
+        this.audience_rating = audience_rating;
+        this.review_rating = review_rating;
+        this.reservation_rate = reservation_rate;
+        this.reservation_grade = reservation_grade;
+        this.grade = grade;
+        this.thumb = thumb;
+        this.image = image;
+    }
+
 
     protected MovieInfo(Parcel in) {
         id = in.readInt();
@@ -179,6 +195,10 @@ public class MovieInfo implements Parcelable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public static Creator<MovieInfo> getCREATOR() {
+        return CREATOR;
     }
 
     @Override

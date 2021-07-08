@@ -30,8 +30,8 @@ public class VolleyHelper {
         return instance;
     }
 
-    public <T> void addRequest(Request<T> req) {
-        getRequestQueue().add(req);
+    public <T> void addRequest(Request<T> request) {
+        getRequestQueue().add(request);
     }
 
     public RequestQueue getRequestQueue() {
@@ -45,7 +45,7 @@ public class VolleyHelper {
         String directory = "";
         if (type == Directory.MOVIE) directory += "/movie/readMovieList";
         else if (type == Directory.DETAIL) directory += "/movie/readMovie";
-        else if (type == Directory.COMMENT) directory += "/movie/readCommentList";
+        else if (type == Directory.COMMENT || type == Directory.COMMENTSEND) directory += "/movie/readCommentList";
         else if (type == Directory.CREATE) directory += "/movie/createComment";
         else if (type == Directory.RECOMMEND) directory += "/movie/increaseRecommend";
         else if (type == Directory.LIKE) directory += "/movie/increaseLikeDisLike";

@@ -1,4 +1,4 @@
-package com.boostcourse.iron.data;
+package com.boostcourse.iron.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -30,14 +30,15 @@ import android.os.Parcelable;
  * }
  */
 
-public class MovieDetail implements Parcelable {
+public class MovieDetail extends MovieResponse implements Parcelable {
 
-    private String title;
     private int id;
+    private String title;
+    private String title_eng;
     private String date;
     private float user_rating;
     private float audience_rating;
-    private float reviewer_rating;
+    private float review_rating;
     private float reservation_rate;
     private float reservation_grade;
     private int grade;
@@ -57,13 +58,42 @@ public class MovieDetail implements Parcelable {
     private int dislike;
     private boolean isDisliked;
 
+    public MovieDetail(int id, String title, String title_eng, String date, float user_rating, float audience_rating, float review_rating, float reservation_rate, float reservation_grade, int grade, String thumb, String image, String photos, String videos, String outlinks, String genre, int duration, String audience, String synopsis, String director, String actor, int like, boolean isLiked, int dislike, boolean isDisliked) {
+        this.id = id;
+        this.title = title;
+        this.title_eng = title_eng;
+        this.date = date;
+        this.user_rating = user_rating;
+        this.audience_rating = audience_rating;
+        this.review_rating = review_rating;
+        this.reservation_rate = reservation_rate;
+        this.reservation_grade = reservation_grade;
+        this.grade = grade;
+        this.thumb = thumb;
+        this.image = image;
+        this.photos = photos;
+        this.videos = videos;
+        this.outlinks = outlinks;
+        this.genre = genre;
+        this.duration = duration;
+        this.audience = audience;
+        this.synopsis = synopsis;
+        this.director = director;
+        this.actor = actor;
+        this.like = like;
+        this.isLiked = isLiked;
+        this.dislike = dislike;
+        this.isDisliked = isDisliked;
+    }
+
     protected MovieDetail(Parcel in) {
-        title = in.readString();
         id = in.readInt();
+        title = in.readString();
+        title_eng = in.readString();
         date = in.readString();
         user_rating = in.readFloat();
         audience_rating = in.readFloat();
-        reviewer_rating = in.readFloat();
+        review_rating = in.readFloat();
         reservation_rate = in.readFloat();
         reservation_grade = in.readFloat();
         grade = in.readInt();
@@ -79,24 +109,20 @@ public class MovieDetail implements Parcelable {
         director = in.readString();
         actor = in.readString();
         like = in.readInt();
-        isLiked = in.readBoolean();
+        isLiked = in.readByte() != 0;
         dislike = in.readInt();
-        isDisliked = in.readBoolean();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+        isDisliked = in.readByte() != 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
         dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(title_eng);
         dest.writeString(date);
         dest.writeFloat(user_rating);
         dest.writeFloat(audience_rating);
-        dest.writeFloat(reviewer_rating);
+        dest.writeFloat(review_rating);
         dest.writeFloat(reservation_rate);
         dest.writeFloat(reservation_grade);
         dest.writeInt(grade);
@@ -112,9 +138,14 @@ public class MovieDetail implements Parcelable {
         dest.writeString(director);
         dest.writeString(actor);
         dest.writeInt(like);
-        dest.writeBoolean(isLiked);
+        dest.writeByte((byte) (isLiked ? 1 : 0));
         dest.writeInt(dislike);
-        dest.writeBoolean(isDisliked);
+        dest.writeByte((byte) (isDisliked ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<MovieDetail> CREATOR = new Creator<MovieDetail>() {
@@ -129,6 +160,14 @@ public class MovieDetail implements Parcelable {
         }
     };
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -137,12 +176,12 @@ public class MovieDetail implements Parcelable {
         this.title = title;
     }
 
-    public int getId() {
-        return id;
+    public String getTitle_eng() {
+        return title_eng;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTitle_eng(String title_eng) {
+        this.title_eng = title_eng;
     }
 
     public String getDate() {
@@ -169,12 +208,12 @@ public class MovieDetail implements Parcelable {
         this.audience_rating = audience_rating;
     }
 
-    public float getReviewer_rating() {
-        return reviewer_rating;
+    public float getReview_rating() {
+        return review_rating;
     }
 
-    public void setReviewer_rating(float reviewer_rating) {
-        this.reviewer_rating = reviewer_rating;
+    public void setReview_rating(float review_rating) {
+        this.review_rating = review_rating;
     }
 
     public float getReservation_rate() {
@@ -313,7 +352,6 @@ public class MovieDetail implements Parcelable {
         this.dislike = dislike;
     }
 
-
     public boolean isDisliked() {
         return isDisliked;
     }
@@ -325,12 +363,13 @@ public class MovieDetail implements Parcelable {
     @Override
     public String toString() {
         return "MovieDetail{" +
-                "title='" + title + '\'' +
-                ", id=" + id +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", title_eng='" + title_eng + '\'' +
                 ", date='" + date + '\'' +
                 ", user_rating=" + user_rating +
                 ", audience_rating=" + audience_rating +
-                ", reviewer_rating=" + reviewer_rating +
+                ", review_rating=" + review_rating +
                 ", reservation_rate=" + reservation_rate +
                 ", reservation_grade=" + reservation_grade +
                 ", grade=" + grade +

@@ -1,6 +1,6 @@
-package com.boostcourse.iron.data;
+package com.boostcourse.iron.model;
 
-public class MovieResponse {
+public class MovieResult extends MovieResponse {
 
     private String message;
     private int code;

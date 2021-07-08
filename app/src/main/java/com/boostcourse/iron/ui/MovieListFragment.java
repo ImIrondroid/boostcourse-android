@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.boostcourse.iron.R;
-import com.boostcourse.iron.data.MovieInfo;
+import com.boostcourse.iron.model.MovieInfo;
 
 import java.util.ArrayList;
 
@@ -39,13 +39,13 @@ public class MovieListFragment extends Fragment {
         });
 
         Bundle bundle = getArguments();
-        ArrayList<MovieInfo> arrayList;
+        ArrayList<MovieInfo> movieList;
         if (bundle != null) { //MainActivity로 부터 전달받은 영화 리스트 입니다.
-            arrayList = bundle.getParcelableArrayList("movieList");
+            movieList = bundle.getParcelableArrayList("movieList");
         } else {
-            arrayList = new ArrayList<>();
+            movieList = new ArrayList<>();
         }
-        MoviePagerAdapter moviePagerAdapter = new MoviePagerAdapter(requireActivity(), arrayList);
+        MoviePagerAdapter moviePagerAdapter = new MoviePagerAdapter(requireActivity(), movieList);
         pager.setAdapter(moviePagerAdapter);
     }
 }
