@@ -9,7 +9,6 @@ import com.boostcourse.iron.R;
 import com.boostcourse.iron.manage.FinishListener;
 import com.boostcourse.iron.manage.MovieRepository;
 import com.boostcourse.iron.model.MovieResponse;
-import com.boostcourse.iron.ui.callback.FragmentCallback;
 import com.boostcourse.iron.model.MovieInfo;
 import com.boostcourse.iron.network.Directory;
 import com.boostcourse.iron.util.ToastUtil;

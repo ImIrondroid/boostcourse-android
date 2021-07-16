@@ -20,14 +20,15 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.boostcourse.iron.R;
 import com.boostcourse.iron.manage.DatabaseManager;
 import com.boostcourse.iron.manage.FinishListener;
 import com.boostcourse.iron.model.MovieComment;
 import com.boostcourse.iron.model.MovieDetail;
+import com.boostcourse.iron.model.MovieGallery;
 import com.boostcourse.iron.network.Directory;
-import com.boostcourse.iron.ui.callback.FragmentCallback;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -35,10 +36,12 @@ import java.util.ArrayList;
 public class MovieDetailFragment extends Fragment implements CommentAdapter.CommentCallback {
 
     private DatabaseManager databaseManager;
+    private GalleryAdapter galleryAdapter;
     private CommentAdapter commentAdapter;
     private MovieDetail movieDetail;
     private FragmentCallback callback;
 
+    private RecyclerView rcvMovieGallery;
     private ListView lvMovieComment;
     private ImageView ivMovieImage;
     private ImageView ivMovieAgeLimit;
@@ -54,6 +57,7 @@ public class MovieDetailFragment extends Fragment implements CommentAdapter.Comm
     private TextView tvMovieSynopsis;
     private TextView tvMovieLikeCount;
     private TextView tvMovieDislikeCount;
+    private TextView tvMovieNoGallery;
     private TextView tvSeeComment;
     private TextView tvWriteComment;
     private TextView tvMovieAudienceRating;
@@ -118,6 +122,7 @@ public class MovieDetailFragment extends Fragment implements CommentAdapter.Comm
     }
 
     private void viewInit(ViewGroup rootView) {
+        rcvMovieGallery = (RecyclerView) rootView.findViewById(R.id.rcv_movie_gallery);
         lvMovieComment = (ListView) rootView.findViewById(R.id.lv_movie_comment);
         ivMovieImage = (ImageView) rootView.findViewById(R.id.iv_movie_image);
         ivMovieAgeLimit = (ImageView) rootView.findViewById(R.id.iv_movie_age_limit);
@@ -133,6 +138,7 @@ public class MovieDetailFragment extends Fragment implements CommentAdapter.Comm
         tvMovieSynopsis = (TextView) rootView.findViewById(R.id.tv_movie_synopsis);
         tvMovieLikeCount = (TextView) rootView.findViewById(R.id.tv_movie_like_count);
         tvMovieDislikeCount = (TextView) rootView.findViewById(R.id.tv_movie_dislike_count);
+        tvMovieNoGallery = (TextView) rootView.findViewById(R.id.tv_movie_no_gallery);
         tvSeeComment = (TextView) rootView.findViewById(R.id.tv_comment_see);
         tvWriteComment = (TextView) rootView.findViewById(R.id.tv_comment_write);
         tvMovieAudienceRating = (TextView) rootView.findViewById(R.id.tv_movie_audience_rating);
@@ -142,7 +148,6 @@ public class MovieDetailFragment extends Fragment implements CommentAdapter.Comm
 
         databaseManager = new DatabaseManager(requireActivity());
         Bundle bundle = getArguments();
-        commentAdapter = new CommentAdapter(requireActivity());
         if (bundle != null) {
             int movieId = bundle.getInt("movieId", Integer.MIN_VALUE);
             if (movieId != Integer.MIN_VALUE) {
@@ -178,14 +183,27 @@ public class MovieDetailFragment extends Fragment implements CommentAdapter.Comm
                     }
                     Glide.with(requireActivity()).load(gradeId).into(ivMovieAgeLimit);
                     Glide.with(requireActivity()).load(movieDetail.getThumb()).placeholder(R.drawable.image_not_available).into(ivMovieImage);
-                }
 
-                ArrayList<MovieComment> arrayList = new ArrayList<>(databaseManager.getMovieCommentList(movieId));
-                if (arrayList.size() != 0) {
-                    commentAdapter.addAll(arrayList);
-                    commentAdapter.setRecommendCallbackListener(this);
-                    lvMovieComment.setAdapter(commentAdapter);
-                    setListViewLimitedHeight();
+                    galleryAdapter = new GalleryAdapter(requireActivity());
+                    galleryAdapter.addPhoto(movieDetail.getPhotos());
+                    galleryAdapter.addVideo(movieDetail.getVideos());
+                    if(galleryAdapter.getItemCount() != 0) { //영화의 사진이나 동영상이 한개라도 있는 경우
+                        tvMovieNoGallery.setVisibility(View.INVISIBLE);
+                        galleryAdapter.setGalleryCallback(this::showGalleryActivity);
+                        rcvMovieGallery.addItemDecoration(new GalleryItemDecoration(requireActivity()));
+                        rcvMovieGallery.setAdapter(galleryAdapter);
+                    } else { //영화의 사진이나 동영상이 한개도 없는 경우
+                        tvMovieNoGallery.setVisibility(View.VISIBLE);
+                    }
+
+                    commentAdapter = new CommentAdapter(requireActivity());
+                    ArrayList<MovieComment> commentList = new ArrayList<>(databaseManager.getMovieCommentList(movieId));
+                    if (commentList.size() != 0) {
+                        commentAdapter.addAll(commentList);
+                        commentAdapter.setRecommendCallbackListener(this);
+                        lvMovieComment.setAdapter(commentAdapter);
+                        setListViewLimitedHeight();
+                    }
                 }
             }
         }
@@ -337,5 +355,13 @@ public class MovieDetailFragment extends Fragment implements CommentAdapter.Comm
                 Log.e("onClickedRecommendItem()", e.getMessage());
             }
         });
+    }
+
+    private void showGalleryActivity(int position) {
+        MovieGallery movieGallery = galleryAdapter.getItem(position);
+        Intent intent = new Intent(requireActivity(), GalleryActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY); //Youtube 실행 후 뒤로가기 처리 목적
+        intent.putExtra("movieGallery", movieGallery);
+        startActivity(intent);
     }
 }

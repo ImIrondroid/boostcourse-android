@@ -365,7 +365,7 @@
             app:layout_constraintTop_toBottomOf="@id/cl_movie_contents_group" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_movie_perfomer_group"
+            android:id="@+id/cl_movie_performer_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white_ffffffff"
@@ -441,11 +441,64 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
-            android:id="@+id/barrier_between_performer_comment"
+            android:id="@+id/barrier_between_performer_gallery"
             android:layout_width="match_parent"
             android:layout_height="16dp"
             android:background="@color/gray_ffefefef"
-            app:layout_constraintTop_toBottomOf="@id/cl_movie_perfomer_group" />
+            app:layout_constraintTop_toBottomOf="@id/cl_movie_performer_group" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_movie_gallery_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_ffffffff"
+            android:paddingBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@id/barrier_between_performer_gallery"
+            tools:layout_editor_absoluteX="0dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/_gallery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/movie_gallery"
+                android:textColor="@color/black_ff000000"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_movie_gallery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/_gallery"
+                tools:listitem="@layout/item_gallery" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_movie_no_gallery"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/movie_no_gallery"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/_gallery" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/barrier_between_gallery_comment"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:background="@color/gray_ffefefef"
+            app:layout_constraintTop_toBottomOf="@id/cl_movie_gallery_group" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_movie_comment_group"
@@ -453,7 +506,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white_ffffffff"
             android:paddingBottom="16dp"
-            app:layout_constraintTop_toBottomOf="@id/barrier_between_performer_comment">
+            app:layout_constraintTop_toBottomOf="@id/barrier_between_gallery_comment">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/_comment"

@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 
 import com.boostcourse.iron.model.MovieInfo;
 import com.boostcourse.iron.R;
-import com.boostcourse.iron.ui.callback.FragmentCallback;
 import com.bumptech.glide.Glide;
 
 import java.text.ParseException;

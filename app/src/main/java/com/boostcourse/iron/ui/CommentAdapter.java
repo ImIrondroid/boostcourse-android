@@ -121,7 +121,7 @@ public class CommentAdapter extends BaseAdapter {
         holder.tvUserContents.setText(movieComment.getContents());
         holder.tvUserRecommendCount.setText(String.valueOf(movieComment.getRecommend()));
         holder.tvUserCommentTimeDiff.setText(convertToFormatTime(movieComment.getTime()));
-        Glide.with(convertView.getContext()).load(movieComment.getWriter_image()).into(holder.ivUserImage);
+        //Glide.with(convertView.getContext()).load(movieComment.getWriter_image()).into(holder.ivUserImage);
         holder.rbUserGrade.setRating(movieComment.getRating());
         holder.llUserRecommendGroup.setOnClickListener(view -> {
             if(callback != null) callback.onClickedItemRecommend(position);

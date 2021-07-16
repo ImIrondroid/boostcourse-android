@@ -10,6 +10,7 @@
         android:id="@+id/iv_movie_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
         android:background="@drawable/image1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,15 +21,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/btn_movie_detail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_movie_image">
+        app:layout_constraintTop_toBottomOf="@id/iv_movie_image"
+        app:layout_constraintVertical_bias="0.2">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_movie_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:text="1"
             android:textColor="@color/white_ffffffff"
             android:textSize="24dp"
@@ -41,7 +43,6 @@
             android:id="@+id/_dot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:text=" . "
             android:textColor="@color/white_ffffffff"
             android:textSize="24dp"
@@ -55,7 +56,6 @@
             android:id="@+id/tv_movie_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:text="군 도"
             android:textColor="@color/white_ffffffff"
             android:textSize="24dp"
@@ -67,39 +67,38 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/_slider"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="8dp"
-        android:layout_marginTop="8dp"
         android:background="@drawable/home_slider1"
         app:layout_constraintBottom_toTopOf="@id/btn_movie_detail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/iv_movie_image"
+        app:layout_constraintStart_toStartOf="@id/iv_movie_image"
         app:layout_constraintTop_toBottomOf="@id/ll_movie_header_group"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.2" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/ll_movie_body_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/btn_movie_detail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/_slider"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.3">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/_movie_reservation_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="예매율 "
+            android:text="@string/movie_rank"
             android:textColor="@color/white_ffffffff" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_movie_reservation_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="61.6"
             android:textColor="@color/white_ffffffff" />
 
@@ -135,7 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" | "
-            android:textColor="@color/white_ffffffff"/>
+            android:textColor="@color/white_ffffffff" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_movie_release_date_diff"
@@ -150,7 +149,7 @@
         android:id="@+id/btn_movie_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="24dp"
         android:background="@drawable/background_detail_button"
         android:paddingStart="24dp"
         android:paddingTop="8dp"

@@ -1,4 +1,4 @@
-package com.boostcourse.iron.ui.callback;
+package com.boostcourse.iron.ui;
 
 import android.os.Bundle;
 

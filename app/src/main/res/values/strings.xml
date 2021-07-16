@@ -2,6 +2,7 @@
     <string name="app_name">씨네마천국</string>
     <string name="app_nickname">iron</string>
     <string name="app_bar_movie_list">영화 목록</string>
+    <string name="app_bar_movie_gallery">갤러리</string>
     <string name="app_bar_comment_write_name">한줄평 작성</string>
     <string name="app_bar_comment_see_name">한줄평 목록</string>
     <string name="app_package">com.boostcourse.iron</string>
@@ -15,6 +16,8 @@
     <string name="movie_audience">누적관객수</string>
     <string name="movie_audience_text">명</string>
     <string name="movie_contents">줄거리</string>
+    <string name="movie_gallery">갤러리</string>
+    <string name="movie_no_gallery">이 영화의 갤러리가 비어있습니다</string>
     <string name="movie_performer">감독/출연</string>
     <string name="movie_director">감독</string>
     <string name="movie_actor">출연</string>
