@@ -2,8 +2,8 @@ package com.boostcourse.iron.ui;
 
 import android.os.Bundle;
 
-import com.boostcourse.iron.manage.FinishListener;
-import com.boostcourse.iron.network.Directory;
+import com.boostcourse.iron.data.FinishListener;
+import com.boostcourse.iron.data.Directory;
 
 public interface FragmentCallback {
 

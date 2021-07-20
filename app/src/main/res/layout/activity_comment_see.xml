@@ -10,7 +10,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.MainActivity">
+        tools:context=".ui.activity.MainActivity">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:background="@color/gray_ffefefef"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context=".ui.CommentSeeActivity">
+            tools:context=".ui.activity.CommentSeeActivity">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_movie_info_group"
@@ -46,7 +46,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
                     android:text="군도"
                     android:textSize="24dp"
@@ -59,7 +58,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/ic_15"
                     app:layout_constraintStart_toEndOf="@id/tv_movie_title"
@@ -71,7 +69,6 @@
                     android:layout_height="2dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
                     android:background="@color/gray_ffefefef"
                     app:layout_constraintTop_toBottomOf="@id/tv_movie_title" />
 
@@ -82,20 +79,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
                     android:rating="4.5"
                     android:stepSize="0.1"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_movie_grade"
-                    app:layout_constraintEnd_toStartOf="@id/tv_movie_grade"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_movie_audience_rating"
+                    app:layout_constraintEnd_toStartOf="@id/tv_movie_audience_rating"
                     app:layout_constraintTop_toBottomOf="@id/_line" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_movie_grade"
+                    android:id="@+id/tv_movie_audience_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
                     android:text="8.2"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@id/tv_movie_audience"
@@ -107,7 +102,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
                     android:text="(1,142명 참여)"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -136,7 +130,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
                     android:text="@string/movie_comment"
                     android:textColor="@color/black_ff000000"
@@ -149,7 +142,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
                     android:background="@drawable/ic_review_selected"
                     app:layout_constraintBottom_toBottomOf="@id/tv_comment_write"
                     app:layout_constraintEnd_toStartOf="@id/tv_comment_write"
@@ -170,13 +162,15 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ListView
-                    android:id="@+id/lv_movie_comment"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_movie_comment"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

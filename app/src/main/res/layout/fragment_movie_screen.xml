@@ -117,7 +117,7 @@
             android:textColor="@color/white_ffffffff" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_movie_grade"
+            android:id="@+id/tv_movie_audience_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="15"

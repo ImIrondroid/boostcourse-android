@@ -15,16 +15,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ui.GalleryActivity"></activity>
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.activity.GalleryActivity"></activity>
+        <activity android:name=".ui.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.CommentSeeActivity" />
-        <activity android:name=".ui.CommentWriteActivity" />
+        <activity android:name=".ui.activity.CommentSeeActivity" />
+        <activity android:name=".ui.activity.CommentWriteActivity" />
     </application>
 
 </manifest>

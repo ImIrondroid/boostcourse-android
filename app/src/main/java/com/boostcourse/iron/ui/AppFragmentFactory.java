@@ -4,6 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentFactory;
 
+import com.boostcourse.iron.ui.fragment.LoadingFragment;
+import com.boostcourse.iron.ui.fragment.MovieDetailFragment;
+import com.boostcourse.iron.ui.fragment.MovieListFragment;
+
 public class AppFragmentFactory extends FragmentFactory {
 
     @NonNull
