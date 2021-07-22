@@ -7,8 +7,6 @@ import android.net.NetworkCapabilities;
 public class NetworkUtil {
 
     /**
-     * 버전별로 나누어 인터넷 연결 여부를 체크합니다.
-     *
      * @param context SystemService에 접근하기 위한 파라미터
      * @return 인터넷 연결 여부
      */

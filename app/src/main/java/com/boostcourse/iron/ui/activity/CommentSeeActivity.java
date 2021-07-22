@@ -1,9 +1,6 @@
 package com.boostcourse.iron.ui.activity;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -15,7 +12,6 @@ import android.widget.TextView;
 
 import com.boostcourse.iron.R;
 import com.boostcourse.iron.data.FinishListener;
-import com.boostcourse.iron.data.MovieRepository;
 import com.boostcourse.iron.ui.model.MovieComment;
 import com.boostcourse.iron.data.Directory;
 import com.boostcourse.iron.ui.model.MovieDetail;
@@ -27,6 +23,9 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class CommentSeeActivity extends BaseActivity<MovieViewModel> implements CommentAdapter.CommentCallback {
 
     private CommentAdapter commentAdapter;
@@ -50,14 +49,8 @@ public class CommentSeeActivity extends BaseActivity<MovieViewModel> implements 
     }
 
     @Override
-    protected MovieViewModel getViewModel() {
-        return new ViewModelProvider(this, new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new MovieViewModel(new MovieRepository(CommentSeeActivity.this));
-            }
-        }).get(MovieViewModel.class);
+    protected Class<MovieViewModel> getViewModelClazz() {
+        return MovieViewModel.class;
     }
 
     @Override

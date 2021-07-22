@@ -28,22 +28,6 @@ public class DatabaseManager {
         database = MovieRoomDatabase.getDatabase(context);
     }
 
-    public LiveData<MovieDetail> getMovieDetailLiveData(int movieId) {
-        return Transformations.map(
-                database.movieDetailDao().selectDetailLiveData(movieId),
-                MovieMapper::mapToModel
-        );
-    }
-
-    public LiveData<List<MovieInfo>> getMovieListLiveData() {
-        return Transformations.map(
-                database.movieDao().selectMovieListLiveData(),
-                list -> list.stream()
-                        .map(MovieMapper::mapToModel)
-                        .collect(Collectors.toList())
-        );
-    }
-
     public LiveData<List<MovieComment>> getMovieCommentListLiveData(int movieId) {
         return Transformations.map(
                 database.movieCommentDao().selectCommentListLiveData(movieId),

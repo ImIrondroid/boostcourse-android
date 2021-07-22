@@ -7,17 +7,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.boostcourse.iron.R;
 import com.boostcourse.iron.data.FinishListener;
-import com.boostcourse.iron.data.MovieRepository;
 import com.boostcourse.iron.data.Directory;
 import com.boostcourse.iron.ui.MovieViewModel;
 import com.boostcourse.iron.ui.base.BaseActivity;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class CommentWriteActivity extends BaseActivity<MovieViewModel> {
 
     private int movieId;
@@ -43,14 +41,8 @@ public class CommentWriteActivity extends BaseActivity<MovieViewModel> {
     }
 
     @Override
-    protected MovieViewModel getViewModel() {
-        return new ViewModelProvider(this, new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new MovieViewModel(new MovieRepository(CommentWriteActivity.this));
-            }
-        }).get(MovieViewModel.class);
+    protected Class<MovieViewModel> getViewModelClazz() {
+        return MovieViewModel.class;
     }
 
     @Override

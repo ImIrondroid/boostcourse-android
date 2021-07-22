@@ -27,8 +27,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     private CommentCallback callback;
 
     @SuppressLint("SimpleDateFormat")
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-    private ArrayList<MovieComment> commentList = new ArrayList<>();
+    private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    private final ArrayList<MovieComment> commentList = new ArrayList<>();
 
     public interface CommentCallback {
         void onClickedItemRecommend(int position);

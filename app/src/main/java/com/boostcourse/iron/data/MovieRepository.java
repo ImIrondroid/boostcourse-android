@@ -36,14 +36,6 @@ public class MovieRepository {
         networkManager = new NetworkManager(context);
     }
 
-    public LiveData<List<MovieInfo>> getMovieList() {
-        return databaseManager.getMovieListLiveData();
-    }
-
-    public LiveData<MovieDetail> getMovieDetail(int movieId) {
-        return databaseManager.getMovieDetailLiveData(movieId);
-    }
-
     public LiveData<List<MovieComment>> getMovieCommentList(int movieId) {
         return databaseManager.getMovieCommentListLiveData(movieId);
     }
@@ -124,47 +116,5 @@ public class MovieRepository {
                 listener.onError();
             }
         }
-
-//        if (directory == Directory.MOVIE) {
-//            requestStrategy.setStrategy(new MovieListStrategy(databaseManager));
-//        } else if (directory == Directory.DETAIL) {
-//            if (NetworkUtil.isInternetConnected(context)) {
-//                requestStrategy.setStrategy(new MovieDetailStrategy(databaseManager));
-//            } else {
-//                String movieId = bundle.getString("movieId");
-//                MovieDetail movieDetail = databaseManager.getMovieDetail(Integer.parseInt(movieId));
-//                if (movieDetail != null) {
-//                    listener.onFinish();
-//                } else {
-//                    listener.onError();
-//                }
-//            }
-//        } else if (directory == Directory.COMMENT) {
-//            if (NetworkUtil.isInternetConnected(context)) {
-//                requestStrategy.setStrategy(new MovieCommentStrategy(databaseManager));
-//            } else {
-//                String id = bundle.getString("movieId");
-//                List<MovieComment> list = databaseManager.getMovieCommentList(Integer.parseInt(id));
-//                if (!list.isEmpty()) {
-//                    boolean isComplete = databaseManager.isCommentListSaved(list);
-//                    if (isComplete) {
-//                        listener.onFinish();
-//                    }
-//                } else {
-//                    listener.onError();
-//                }
-//            }
-//        } else if (directory == Directory.LIKE) {
-//            requestStrategy.setStrategy(new MovieLikeStrategy(databaseManager));
-//        } else if (directory == Directory.DISLIKE) {
-//            requestStrategy.setStrategy(new MovieDislikeStrategy(databaseManager));
-//        } else if (directory == Directory.RECOMMEND) {
-//            requestStrategy.setStrategy(new MovieRecommendStrategy());
-//        } else if (directory == Directory.COMMENTSEND) {
-//            requestStrategy.setStrategy(new MovieCommentSendStrategy(databaseManager));
-//        } else if (directory == Directory.CREATE) {
-//            requestStrategy.setStrategy(new MovieCreateStrategy());
-//        }
-
     }
 }

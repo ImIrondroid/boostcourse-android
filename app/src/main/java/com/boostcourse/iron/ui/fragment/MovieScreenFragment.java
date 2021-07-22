@@ -22,17 +22,8 @@ import java.util.Date;
 
 public class MovieScreenFragment extends BaseFragment {
 
-    private FragmentCallback callback;
-
-    private ImageView ivMovieImage;
-    private TextView tvMovieId;
-    private TextView tvMovieTitle;
-    private TextView tvMovieReservationRate;
-    private TextView tvMovieGrade;
-    private TextView tvMovieReleaseDateDiff;
-    private Button btnMovieDetail;
-
     private MovieInfo movieInfo;
+    private FragmentCallback callback;
 
     @Override
     protected int getLayoutRes() {
@@ -57,13 +48,13 @@ public class MovieScreenFragment extends BaseFragment {
 
     @Override
     public void init(ViewGroup rootView) {
-        ivMovieImage = (ImageView) rootView.findViewById(R.id.iv_movie_image);
-        tvMovieId = (TextView) rootView.findViewById(R.id.tv_movie_id);
-        tvMovieTitle = (TextView) rootView.findViewById(R.id.tv_movie_title);
-        tvMovieReservationRate = (TextView) rootView.findViewById(R.id.tv_movie_reservation_rate);
-        tvMovieGrade = (TextView) rootView.findViewById(R.id.tv_movie_audience_rating);
-        tvMovieReleaseDateDiff = (TextView) rootView.findViewById(R.id.tv_movie_release_date_diff);
-        btnMovieDetail = (Button) rootView.findViewById(R.id.btn_movie_detail);
+        ImageView ivMovieImage = (ImageView) rootView.findViewById(R.id.iv_movie_image);
+        TextView tvMovieId = (TextView) rootView.findViewById(R.id.tv_movie_id);
+        TextView tvMovieTitle = (TextView) rootView.findViewById(R.id.tv_movie_title);
+        TextView tvMovieReservationRate = (TextView) rootView.findViewById(R.id.tv_movie_reservation_rate);
+        TextView tvMovieGrade = (TextView) rootView.findViewById(R.id.tv_movie_audience_rating);
+        TextView tvMovieReleaseDateDiff = (TextView) rootView.findViewById(R.id.tv_movie_release_date_diff);
+        Button btnMovieDetail = (Button) rootView.findViewById(R.id.btn_movie_detail);
 
         Bundle bundle = getArguments();
         if (bundle != null) {

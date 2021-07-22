@@ -6,7 +6,6 @@ import android.view.MenuItem;
 
 import com.boostcourse.iron.R;
 import com.boostcourse.iron.data.FinishListener;
-import com.boostcourse.iron.data.MovieRepository;
 import com.boostcourse.iron.ui.model.MovieResponse;
 import com.boostcourse.iron.ui.model.MovieInfo;
 import com.boostcourse.iron.data.Directory;
@@ -27,12 +26,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends BaseActivity<MovieViewModel>
         implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback {
 
@@ -50,14 +50,8 @@ public class MainActivity extends BaseActivity<MovieViewModel>
     }
 
     @Override
-    protected MovieViewModel getViewModel() {
-        return new ViewModelProvider(this, new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new MovieViewModel(new MovieRepository(MainActivity.this));
-            }
-        }).get(MovieViewModel.class);
+    protected Class<MovieViewModel> getViewModelClazz() {
+        return MovieViewModel.class;
     }
 
     @Override

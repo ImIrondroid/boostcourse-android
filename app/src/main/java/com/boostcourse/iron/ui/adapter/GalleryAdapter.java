@@ -17,11 +17,11 @@ import java.util.ArrayList;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MediaViewHolder> {
 
-    private LayoutInflater inflater;
-    private Context context;
+    private final LayoutInflater inflater;
+    private final Context context;
     private GalleryCallback callback;
 
-    private ArrayList<MovieGallery> galleryList = new ArrayList<>();
+    private final ArrayList<MovieGallery> galleryList = new ArrayList<>();
 
     public interface GalleryCallback {
 

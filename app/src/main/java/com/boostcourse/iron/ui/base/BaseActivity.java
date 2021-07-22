@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.boostcourse.iron.R;
 
@@ -28,8 +29,12 @@ public abstract class BaseActivity<VM extends BaseViewModel> extends AppCompatAc
     @StringRes
     protected abstract int getTitleRes();
 
-    protected VM getViewModel() {
+    protected Class<VM> getViewModelClazz() {
         return null;
+    }
+
+    protected VM getViewModel() {
+        return new ViewModelProvider(this).get(getViewModelClazz());
     }
 
     @Override
@@ -49,7 +54,7 @@ public abstract class BaseActivity<VM extends BaseViewModel> extends AppCompatAc
     }
 
     protected void init() {
-        if (getViewModel() != null) {
+        if (getViewModelClazz() != null && getViewModel() != null) {
             viewModel = getViewModel();
         }
     }

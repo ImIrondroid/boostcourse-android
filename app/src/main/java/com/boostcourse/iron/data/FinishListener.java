@@ -13,7 +13,6 @@ public interface FinishListener {
     default void onFinish(List<? extends MovieResponse> result) {}
     default void onFinish(MovieResponse result) {}
     default void onFinish() {}
-    default void onNext() {}
     default void onError(Exception e) {}
     default void onError() {}
 }

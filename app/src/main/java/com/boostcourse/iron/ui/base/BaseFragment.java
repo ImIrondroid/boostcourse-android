@@ -9,6 +9,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 public abstract class BaseFragment<VM extends BaseViewModel> extends Fragment {
 
@@ -17,8 +18,12 @@ public abstract class BaseFragment<VM extends BaseViewModel> extends Fragment {
     @LayoutRes
     abstract protected int getLayoutRes();
 
-    protected VM getViewModel() {
+    protected Class<VM> getViewModelClazz() {
         return null;
+    }
+
+    protected VM getViewModel() {
+        return new ViewModelProvider(requireActivity()).get(getViewModelClazz());
     }
 
     @Nullable
@@ -32,7 +37,7 @@ public abstract class BaseFragment<VM extends BaseViewModel> extends Fragment {
     }
 
     public void init(ViewGroup rootView) {
-        if (getViewModel() != null) {
+        if (getViewModelClazz() != null && getViewModel() != null) {
             viewModel = getViewModel();
         }
     }

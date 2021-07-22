@@ -34,6 +34,9 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MovieDetailFragment extends BaseFragment<MovieViewModel> implements CommentAdapter.CommentCallback {
 
     private GalleryAdapter galleryAdapter;
@@ -66,6 +69,16 @@ public class MovieDetailFragment extends BaseFragment<MovieViewModel> implements
     private RatingBar rbMovieUserRating;
 
     @Override
+    protected int getLayoutRes() {
+        return R.layout.fragment_movie_detail;
+    }
+
+    @Override
+    protected Class<MovieViewModel> getViewModelClazz() {
+        return MovieViewModel.class;
+    }
+
+    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof FragmentCallback) {
@@ -79,16 +92,6 @@ public class MovieDetailFragment extends BaseFragment<MovieViewModel> implements
         if (callback != null) {
             callback = null;
         }
-    }
-
-    @Override
-    protected int getLayoutRes() {
-        return R.layout.fragment_movie_detail;
-    }
-
-    @Override
-    protected MovieViewModel getViewModel() {
-        return new ViewModelProvider(requireActivity()).get(MovieViewModel.class);
     }
 
     @Override
@@ -170,6 +173,7 @@ public class MovieDetailFragment extends BaseFragment<MovieViewModel> implements
         tvMovieSynopsis.setText(movieDetail.getSynopsis());
         tvMovieDirector.setText(movieDetail.getDirector());
         tvMovieActor.setText(movieDetail.getActor());
+
         if (movieDetail.isLiked())
             Glide.with(requireActivity()).load(R.drawable.ic_thumb_up_selected).into(ivMovieLike);
         if (movieDetail.isDisliked())
@@ -202,9 +206,10 @@ public class MovieDetailFragment extends BaseFragment<MovieViewModel> implements
         commentAdapter = new CommentAdapter(requireActivity());
         commentAdapter.setRecommendCallbackListener(this);
         rcvMovieComment.setAdapter(commentAdapter);
+
         viewModel.getMovieCommentList(movieDetail.getId()).observe(getViewLifecycleOwner(), commentList -> {
             if (!commentList.isEmpty()) {
-                commentAdapter.addAll(new ArrayList<>(commentList.subList(0, CommentAdapter.PREVIEW_ITEM_MAX_SIZE)));
+                commentAdapter.addAll(new ArrayList<>(commentList.subList(0, Math.min(commentList.size(), CommentAdapter.PREVIEW_ITEM_MAX_SIZE))));
             }
         });
     }
@@ -262,6 +267,7 @@ public class MovieDetailFragment extends BaseFragment<MovieViewModel> implements
         Bundle bundle = new Bundle();
         bundle.putParcelable("movieDetail", movieDetail);
         bundle.putString("id", String.valueOf(movieDetail.getId()));
+
         if (directory == Directory.LIKE) {
             if (movieDetail.isLiked()) bundle.putString("likeyn", "Y");
             else bundle.putString("likeyn", "N");

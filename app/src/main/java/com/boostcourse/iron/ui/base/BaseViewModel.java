@@ -6,7 +6,7 @@ import com.boostcourse.iron.data.MovieRepository;
 
 public class BaseViewModel extends ViewModel {
 
-    protected final MovieRepository movieRepository;
+    protected MovieRepository movieRepository;
 
     public BaseViewModel(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;

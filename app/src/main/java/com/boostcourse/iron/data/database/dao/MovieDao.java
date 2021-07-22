@@ -1,6 +1,5 @@
 package com.boostcourse.iron.data.database.dao;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -18,8 +17,4 @@ public interface MovieDao {
 
     @Query("SELECT * FROM movie_table")
     List<MovieEntity> selectMovieList();
-
-
-    @Query("SELECT * FROM movie_table")
-    LiveData<List<MovieEntity>> selectMovieListLiveData();
 }
