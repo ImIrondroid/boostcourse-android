@@ -11,7 +11,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.boostcourse.iron.R;
@@ -279,7 +278,7 @@ public class MovieDetailFragment extends BaseFragment<MovieViewModel> implements
         callback.sendRequestOnFragment(directory, bundle, new FinishListener() {
             @Override
             public void onError(Exception e) {
-                Log.e("applyOnServer()", e.getMessage());
+                Log.e("applyOnServer()", e.getMessage() != null ? e.getMessage() : getString(R.string.please_connect_internet));
             }
 
             @Override
@@ -307,7 +306,7 @@ public class MovieDetailFragment extends BaseFragment<MovieViewModel> implements
         callback.sendRequestOnFragment(Directory.RECOMMEND, bundle, new FinishListener() {
             @Override
             public void onError(Exception e) {
-                Log.e("onClickedRecommendItem()", e.getMessage());
+                Log.e("onClickedRecommendItem()", e.getMessage() != null ? e.getMessage() : getString(R.string.please_connect_internet));
             }
 
             @Override
@@ -335,7 +334,7 @@ public class MovieDetailFragment extends BaseFragment<MovieViewModel> implements
 
             @Override
             public void onError(Exception e) {
-                Log.e("loadMovieDetail()", e.getMessage());
+                Log.e("loadMovieDetail()", e.getMessage() != null ? e.getMessage() : getString(R.string.please_connect_internet));
             }
 
             @Override

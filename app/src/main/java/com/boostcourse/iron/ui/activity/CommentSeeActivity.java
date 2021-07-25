@@ -120,7 +120,7 @@ public class CommentSeeActivity extends BaseActivity<MovieViewModel> implements 
 
             @Override
             public void onError(Exception e) {
-                Log.e("loadMovieCommentList()", e.getMessage());
+                Log.e("loadMovieCommentList()", e.getMessage() != null ? e.getMessage() : getString(R.string.please_connect_internet));
             }
         });
     }
@@ -143,7 +143,7 @@ public class CommentSeeActivity extends BaseActivity<MovieViewModel> implements 
         viewModel.sendRequest(Directory.RECOMMEND, bundle, new FinishListener() {
             @Override
             public void onError(Exception e) {
-                Log.e("onClickedItemRecommend()", e.getMessage());
+                Log.e("onClickedItemRecommend()", e.getMessage() != null ? e.getMessage() : getString(R.string.please_connect_internet));
             }
 
             @Override

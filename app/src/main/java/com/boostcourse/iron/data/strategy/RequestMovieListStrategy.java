@@ -16,11 +16,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RequestListStrategy implements RequestStrategy {
+public class RequestMovieListStrategy implements RequestStrategy {
 
     private final DatabaseManager databaseManager;
 
-    public RequestListStrategy(DatabaseManager databaseManager) {
+    public static final int REQUEST_ORDER_RANK = 1;
+    public static final int REQUEST_ORDER_CURATION = 2;
+    public static final int REQUEST_ORDER_UPCOMING = 3;
+
+    public RequestMovieListStrategy(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
     }
 

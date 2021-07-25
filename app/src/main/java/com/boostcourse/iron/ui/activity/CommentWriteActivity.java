@@ -87,7 +87,7 @@ public class CommentWriteActivity extends BaseActivity<MovieViewModel> {
 
             @Override
             public void onError(Exception e) {
-                Log.e("saveComment()", e.getMessage());
+                Log.e("saveComment()", e.getMessage() != null ? e.getMessage() : getString(R.string.please_connect_internet));
             }
 
             @Override
@@ -112,7 +112,7 @@ public class CommentWriteActivity extends BaseActivity<MovieViewModel> {
 
             @Override
             public void onError(Exception e) {
-                Log.e("reloadCommentList()", e.getMessage());
+                Log.e("reloadCommentList()", e.getMessage() != null ? e.getMessage() : getString(R.string.please_connect_internet));
             }
 
             @Override

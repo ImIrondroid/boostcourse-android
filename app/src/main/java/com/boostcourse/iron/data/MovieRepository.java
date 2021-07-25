@@ -15,7 +15,7 @@ import com.boostcourse.iron.data.strategy.RequestCreateStrategy;
 import com.boostcourse.iron.data.strategy.RequestDetailStrategy;
 import com.boostcourse.iron.data.strategy.RequestDislikeStrategy;
 import com.boostcourse.iron.data.strategy.RequestLikeStrategy;
-import com.boostcourse.iron.data.strategy.RequestListStrategy;
+import com.boostcourse.iron.data.strategy.RequestMovieListStrategy;
 import com.boostcourse.iron.data.strategy.RequestRecommendStrategy;
 import com.boostcourse.iron.util.NetworkUtil;
 
@@ -54,7 +54,7 @@ public class MovieRepository {
             RequestStrategy requestStrategy = new RequestStrategy();
 
             if (directory == Directory.MOVIE) {
-                requestStrategy.setStrategy(new RequestListStrategy(databaseManager));
+                requestStrategy.setStrategy(new RequestMovieListStrategy(databaseManager));
             } else if (directory == Directory.DETAIL) {
                 requestStrategy.setStrategy(new RequestDetailStrategy(databaseManager));
             } else if (directory == Directory.COMMENTLIST) {

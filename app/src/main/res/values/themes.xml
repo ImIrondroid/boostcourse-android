@@ -5,6 +5,7 @@
         <item name="colorPrimaryDark">@color/purple_500</item>
         <item name="colorAccent">@color/purple_700</item>
         <item name="android:colorPrimaryDark">@color/black_ff000000</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenu</item>
 
         <item name="windowNoTitle">true</item>
     </style>
@@ -16,7 +17,27 @@
         <item name="android:colorPrimaryDark">@color/gray_ffefefef</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_theme</item>
+    </style>
+
     <style name="Theme.Cinema.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Cinema.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="OverflowMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
+        <item name="android:overlapAnchor">false</item>
+        <item name="android:popupAnimationStyle">@null</item>
+    </style>
+
+    <style name="MyDarkToolbarStyle" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/black_ff000000</item>
+        <item name="android:textColor">@color/white_ffffffff</item>
+    </style>
+
+    <style name="animstyle">
+        <item name="android:popupEnterTransition">@anim/translate_up</item>
+        <item name="android:popupExitTransition">@anim/translate_down</item>
+    </style>
 </resources>

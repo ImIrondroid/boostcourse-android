@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:id="@+id/menu_group">
+        <item
+            android:id="@+id/menu1"
+            android:icon="@drawable/ic_list"
+            android:title="@string/menu_list"
+            app:showAsAction="ifRoom|withText" />
+        <item
+            android:id="@+id/menu2"
+            android:icon="@drawable/ic_review"
+            android:title="@string/menu_api"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/menu3"
+            android:icon="@drawable/ic_book"
+            android:title="@string/menu_book"
+            app:showAsAction="never" />
+    </group>
+
+</menu>

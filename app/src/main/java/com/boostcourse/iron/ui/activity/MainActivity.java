@@ -3,9 +3,14 @@ package com.boostcourse.iron.ui.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.boostcourse.iron.R;
 import com.boostcourse.iron.data.FinishListener;
+import com.boostcourse.iron.data.strategy.RequestMovieListStrategy;
 import com.boostcourse.iron.ui.model.MovieResponse;
 import com.boostcourse.iron.ui.model.MovieInfo;
 import com.boostcourse.iron.data.Directory;
@@ -21,6 +26,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -38,6 +44,13 @@ public class MainActivity extends BaseActivity<MovieViewModel>
 
     private FragmentManager manager;
     private DrawerLayout drawer;
+
+    private LinearLayoutCompat linearLayout;
+    private ImageView ivMovieType;
+    private Animation translateUp;
+    private Animation translateDown;
+
+    private boolean isMenuOpen = false;
 
     @Override
     protected int getLayoutRes() {
@@ -58,6 +71,14 @@ public class MainActivity extends BaseActivity<MovieViewModel>
     protected void init() {
         super.init();
 
+        linearLayout = findViewById(R.id.ll_movie_order_group);
+        ivMovieType = findViewById(R.id.iv_movie_type);
+        translateUp = AnimationUtils.loadAnimation(this, R.anim.translate_up);
+        translateDown = AnimationUtils.loadAnimation(this, R.anim.translate_down);
+
+        manager = getSupportFragmentManager();
+        manager.setFragmentFactory(new AppFragmentFactory());
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         drawer = findViewById(R.id.drawer_layout);
@@ -65,10 +86,20 @@ public class MainActivity extends BaseActivity<MovieViewModel>
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        manager = getSupportFragmentManager();
-        manager.setFragmentFactory(new AppFragmentFactory());
+        ivMovieType.setOnClickListener(view -> {
+            if (isMenuOpen) {
+                linearLayout.startAnimation(translateUp);
+                linearLayout.setVisibility(View.INVISIBLE);
+            } else {
+                linearLayout.startAnimation(translateDown);
+                linearLayout.setVisibility(View.VISIBLE);
+                linearLayout.bringToFront();
+            }
 
-        loadMovieList();
+            isMenuOpen = !isMenuOpen;
+        });
+
+        loadMovieList(1);
     }
 
     /**
@@ -115,14 +146,31 @@ public class MainActivity extends BaseActivity<MovieViewModel>
         viewModel.sendRequest(type, bundle, listener);
     }
 
+    public void onMenuItemClicked(View view) {
+        if (view.getId() == R.id.iv_movie_order_rank) {
+            ivMovieType.setBackgroundResource(R.drawable.order11);
+            loadMovieList(RequestMovieListStrategy.REQUEST_ORDER_RANK);
+        } else if (view.getId() == R.id.iv_movie_order_curation) {
+            ivMovieType.setBackgroundResource(R.drawable.order22);
+            loadMovieList(RequestMovieListStrategy.REQUEST_ORDER_CURATION);
+        } else {
+            ivMovieType.setBackgroundResource(R.drawable.order33);
+            loadMovieList(RequestMovieListStrategy.REQUEST_ORDER_UPCOMING);
+        }
+
+        isMenuOpen = !isMenuOpen;
+        linearLayout.startAnimation(translateUp);
+        linearLayout.setVisibility(View.INVISIBLE);
+    }
+
     /**
      * 영화 리스트 예매율 순으로 영화 리스트 조회 (type : 1)
      */
-    private void loadMovieList() {
+    private void loadMovieList(int type) {
         showLoading();
 
         Bundle bundle = new Bundle();
-        bundle.putString("type", "1");
+        bundle.putString("type", String.valueOf(type));
 
         viewModel.sendRequest(Directory.MOVIE, bundle, new FinishListener() {
             @Override
@@ -132,7 +180,7 @@ public class MainActivity extends BaseActivity<MovieViewModel>
 
             @Override
             public void onError(Exception e) {
-                Log.e("loadMovieInfoList()", e.getMessage());
+                Log.e("loadMovieInfoList()", e.getMessage() != null ? e.getMessage() : getString(R.string.please_connect_internet));
             }
 
             @Override
