@@ -12,14 +12,14 @@ import com.boostcourse.iron.ui.fragment.MovieScreenFragment;
 
 import java.util.ArrayList;
 
-public class MoviePagerAdapter extends FragmentStateAdapter {
+public class MovieFragmentStateAdapter extends FragmentStateAdapter {
 
     private static final int FRAGMENT_MAX_ITEM_COUNT = 10000;
     private final int ITEM_DIVIDER_COUNT; //무한 스크롤링처럼 보여지게 하기 위해 적용해 보았습니다.
 
     private final ArrayList<MovieInfo> movieList = new ArrayList<>();
 
-    public MoviePagerAdapter(@NonNull FragmentActivity fragmentActivity, ArrayList<MovieInfo> movieList) {
+    public MovieFragmentStateAdapter(@NonNull FragmentActivity fragmentActivity, ArrayList<MovieInfo> movieList) {
         super(fragmentActivity);
 
         ITEM_DIVIDER_COUNT = movieList.size();

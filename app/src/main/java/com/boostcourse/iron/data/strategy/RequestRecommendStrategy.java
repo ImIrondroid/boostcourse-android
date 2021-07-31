@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class RequestRecommendStrategy implements RequestStrategy {
 
-    private DatabaseManager databaseManager;
+    private final DatabaseManager databaseManager;
 
     public RequestRecommendStrategy(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
@@ -35,7 +35,10 @@ public class RequestRecommendStrategy implements RequestStrategy {
                 VolleyHelper.getUrl(Directory.RECOMMEND),
                 MovieResult.class,
                 params,
-                response -> databaseManager.saveRecommend(movieComment),
+                response -> {
+                    databaseManager.saveRecommend(movieComment);
+                    listener.onFinish();
+                },
                 listener::onError
         );
     }

@@ -15,13 +15,15 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        long APP_SPLASH_TIME = 2000L;
+
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 showMainActivity();
             }
-        }, 2000L);
+        }, APP_SPLASH_TIME);
     }
 
     private void showMainActivity() {

@@ -3,13 +3,11 @@ package com.boostcourse.iron.ui.fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.boostcourse.iron.databinding.FragmentMovieScreenBinding;
+import com.boostcourse.iron.ui.base.BaseViewModel;
 import com.boostcourse.iron.ui.model.MovieInfo;
 import com.boostcourse.iron.R;
 import com.boostcourse.iron.ui.FragmentCallback;
@@ -20,7 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MovieScreenFragment extends BaseFragment {
+public class MovieScreenFragment extends BaseFragment<BaseViewModel, FragmentMovieScreenBinding> {
 
     private MovieInfo movieInfo;
     private FragmentCallback callback;
@@ -47,28 +45,20 @@ public class MovieScreenFragment extends BaseFragment {
     }
 
     @Override
-    public void init(ViewGroup rootView) {
-        ImageView ivMovieImage = (ImageView) rootView.findViewById(R.id.iv_movie_image);
-        TextView tvMovieId = (TextView) rootView.findViewById(R.id.tv_movie_id);
-        TextView tvMovieTitle = (TextView) rootView.findViewById(R.id.tv_movie_title);
-        TextView tvMovieReservationRate = (TextView) rootView.findViewById(R.id.tv_movie_reservation_rate);
-        TextView tvMovieGrade = (TextView) rootView.findViewById(R.id.tv_movie_audience_rating);
-        TextView tvMovieReleaseDateDiff = (TextView) rootView.findViewById(R.id.tv_movie_release_date_diff);
-        Button btnMovieDetail = (Button) rootView.findViewById(R.id.btn_movie_detail);
-
+    public void init() {
         Bundle bundle = getArguments();
         if (bundle != null) {
             movieInfo = bundle.getParcelable("movieInfo");
 
-            Glide.with(requireActivity()).load(movieInfo.getImage()).placeholder(R.drawable.image_not_available).into(ivMovieImage);
-            tvMovieId.setText(String.valueOf(movieInfo.getId()));
-            tvMovieTitle.setText(movieInfo.getTitle());
-            tvMovieReservationRate.setText(String.valueOf(movieInfo.getReservation_rate()));
-            tvMovieGrade.setText(String.valueOf(movieInfo.getGrade()));
-            tvMovieReleaseDateDiff.setText(getDiffDate(movieInfo.getDate()));
+            Glide.with(requireActivity()).load(movieInfo.getImage()).placeholder(R.drawable.image_not_available).into(binding.ivMovieImage);
+            binding.tvMovieId.setText(String.valueOf(movieInfo.getId()));
+            binding.tvMovieTitle.setText(movieInfo.getTitle());
+            binding.tvMovieReservationRate.setText(String.valueOf(movieInfo.getReservation_rate()));
+            binding.tvMovieAudienceRating.setText(String.valueOf(movieInfo.getGrade()));
+            binding.tvMovieReleaseDateDiff.setText(getDiffDate(movieInfo.getDate()));
         }
 
-        btnMovieDetail.setOnClickListener(view -> {
+        binding.btnMovieDetail.setOnClickListener(view -> {
             if (callback != null) callback.onClickedOnFragment(movieInfo.getId());
         });
     }

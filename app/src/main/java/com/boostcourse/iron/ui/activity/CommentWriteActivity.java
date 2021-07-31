@@ -3,27 +3,20 @@ package com.boostcourse.iron.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RatingBar;
 
 import com.boostcourse.iron.R;
 import com.boostcourse.iron.data.FinishListener;
 import com.boostcourse.iron.data.Directory;
+import com.boostcourse.iron.databinding.ActivityCommentWriteBinding;
 import com.boostcourse.iron.ui.MovieViewModel;
 import com.boostcourse.iron.ui.base.BaseActivity;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class CommentWriteActivity extends BaseActivity<MovieViewModel> {
+public class CommentWriteActivity extends BaseActivity<MovieViewModel, ActivityCommentWriteBinding> {
 
     private int movieId;
-
-    private RatingBar rbCommentGrade;
-    private EditText etCommentText;
-    private Button btnCommentSave;
-    private Button btnCommentCancel;
 
     @Override
     protected boolean isBackButtonVisible() {
@@ -49,21 +42,16 @@ public class CommentWriteActivity extends BaseActivity<MovieViewModel> {
     public void init() {
         super.init();
 
-        rbCommentGrade = (RatingBar) findViewById(R.id.rb_review_grade);
-        etCommentText = (EditText) findViewById(R.id.et_review_text);
-        btnCommentSave = (Button) findViewById(R.id.btn_review_save);
-        btnCommentCancel = (Button) findViewById(R.id.btn_review_cancel);
-
         Intent intent = getIntent();
         if (intent != null) {
             movieId = intent.getIntExtra("movieId", 0);
         }
 
-        btnCommentSave.setOnClickListener(view -> {
+        binding.btnReviewSave.setOnClickListener(view -> {
             createComment();
         });
 
-        btnCommentCancel.setOnClickListener(view -> {
+        binding.btnReviewCancel.setOnClickListener(view -> {
             finish();
         });
     }
@@ -75,9 +63,9 @@ public class CommentWriteActivity extends BaseActivity<MovieViewModel> {
         Bundle bundle = new Bundle();
         bundle.putString("movieId", String.valueOf(movieId));
         bundle.putString("writer", getString(R.string.app_nickname));
-        bundle.putString("rating", String.valueOf(rbCommentGrade.getRating()));
-        bundle.putString("contents", etCommentText.getText().toString().isEmpty() ?
-                getString(R.string.default_comment_message) : etCommentText.getText().toString()); //contents를 빈값으로 보내면 400 에러가 발생하여 기본값으로 설정하였습니다.
+        bundle.putString("rating", String.valueOf(binding.rbCommentGrade.getRating()));
+        bundle.putString("contents", binding.etCommentText.getText().toString().isEmpty() ?
+                getString(R.string.default_comment_message) : binding.etCommentText.getText().toString()); //contents를 빈값으로 보내면 400 에러가 발생하여 기본값으로 설정하였습니다.
 
         viewModel.sendRequest(Directory.CREATE, bundle, new FinishListener() {
             @Override

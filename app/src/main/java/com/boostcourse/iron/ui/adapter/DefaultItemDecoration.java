@@ -8,14 +8,14 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class GalleryItemDecoration extends RecyclerView.ItemDecoration {
+public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
 
-    private final int size16;
-    private final int size8;
+    private final int fullDp;
+    private final int halfDp;
 
-    public GalleryItemDecoration(Context context) {
-        size16 = dpToPx(context, 16);
-        size8 = dpToPx(context, 8);
+    public DefaultItemDecoration(Context context, int fullDp) {
+        this.fullDp = dpToPx(context, fullDp);
+        this.halfDp = dpToPx(context, fullDp / 2);
     }
 
     private int dpToPx(Context context, int dp) {
@@ -31,17 +31,17 @@ public class GalleryItemDecoration extends RecyclerView.ItemDecoration {
         int endIndex = parent.getItemDecorationCount() - 1;
         int position = parent.getChildAdapterPosition(view);
 
-        outRect.top = size16;
+        outRect.top = fullDp;
 
-        if(position == startIndex) {
-            outRect.left = size16;
-            outRect.right = size8;
-        } else if(position == endIndex) {
-            outRect.left = size8;
-            outRect.right = size16;
+        if (position == startIndex) {
+            outRect.left = fullDp;
+            outRect.right = halfDp;
+        } else if (position == endIndex) {
+            outRect.left = halfDp;
+            outRect.right = fullDp;
         } else {
-            outRect.left = size8;
-            outRect.right = size8;
+            outRect.left = halfDp;
+            outRect.right = halfDp;
         }
     }
 }

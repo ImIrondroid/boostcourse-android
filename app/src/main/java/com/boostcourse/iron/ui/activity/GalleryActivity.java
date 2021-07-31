@@ -4,19 +4,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.widget.ImageView;
 
 import com.boostcourse.iron.R;
+import com.boostcourse.iron.databinding.ActivityGalleryBinding;
+import com.boostcourse.iron.ui.adapter.GalleryRecyclerViewAdapter;
+import com.boostcourse.iron.ui.base.BaseViewModel;
 import com.boostcourse.iron.ui.model.MovieGallery;
 import com.boostcourse.iron.ui.base.BaseActivity;
 import com.bumptech.glide.Glide;
 
-public class GalleryActivity extends BaseActivity {
+public class GalleryActivity extends BaseActivity<BaseViewModel, ActivityGalleryBinding> {
 
     private ScaleGestureDetector mScaleGestureDetector;
     private float mScaleFactor = 1.0f;
-
-    private ImageView ivMovieGallery;
 
     @Override
     protected int getLayoutRes() {
@@ -37,19 +37,15 @@ public class GalleryActivity extends BaseActivity {
     public void init() {
         super.init();
 
-        ivMovieGallery = (ImageView) findViewById(R.id.iv_movie_gallery);
-
         Intent intent = getIntent();
         if (intent != null) {
             MovieGallery movieGallery = intent.getParcelableExtra("movieGallery");
 
             int id = movieGallery.getId();
-            int photoId = 1;
-            int videoId = 2;
-            if (id == photoId) {
-                Glide.with(this).load(movieGallery.getPath()).into(ivMovieGallery);
+            if (id == GalleryRecyclerViewAdapter.GALLERY_PHOTO_ID) {
+                Glide.with(this).load(movieGallery.getPath()).into(binding.ivMovieGallery);
                 mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
-            } else if (id == videoId) {
+            } else if (id == GalleryRecyclerViewAdapter.GALLERY_VIDEO_ID) {
                 startVideo(movieGallery.getPath());
             }
         }
@@ -71,8 +67,8 @@ public class GalleryActivity extends BaseActivity {
         public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
             mScaleFactor *= scaleGestureDetector.getScaleFactor();
             mScaleFactor = Math.max(1.0f, Math.min(mScaleFactor, 5.0f));
-            ivMovieGallery.setScaleX(mScaleFactor);
-            ivMovieGallery.setScaleY(mScaleFactor);
+            binding.ivMovieGallery.setScaleX(mScaleFactor);
+            binding.ivMovieGallery.setScaleY(mScaleFactor);
             return true;
         }
     }

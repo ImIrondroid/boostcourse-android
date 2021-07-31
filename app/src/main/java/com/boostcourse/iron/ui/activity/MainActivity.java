@@ -6,11 +6,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 
 import com.boostcourse.iron.R;
 import com.boostcourse.iron.data.FinishListener;
 import com.boostcourse.iron.data.strategy.RequestMovieListStrategy;
+import com.boostcourse.iron.databinding.ActivityMainBinding;
 import com.boostcourse.iron.ui.model.MovieResponse;
 import com.boostcourse.iron.ui.model.MovieInfo;
 import com.boostcourse.iron.data.Directory;
@@ -26,9 +26,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -39,18 +37,15 @@ import java.util.List;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends BaseActivity<MovieViewModel>
+public class MainActivity extends BaseActivity<MovieViewModel, ActivityMainBinding>
         implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback {
 
     private FragmentManager manager;
-    private DrawerLayout drawer;
-
-    private LinearLayoutCompat linearLayout;
-    private ImageView ivMovieType;
     private Animation translateUp;
     private Animation translateDown;
 
     private boolean isMenuOpen = false;
+    private ActionBarDrawerToggle toggle;
 
     @Override
     protected int getLayoutRes() {
@@ -71,35 +66,36 @@ public class MainActivity extends BaseActivity<MovieViewModel>
     protected void init() {
         super.init();
 
-        linearLayout = findViewById(R.id.ll_movie_order_group);
-        ivMovieType = findViewById(R.id.iv_movie_type);
         translateUp = AnimationUtils.loadAnimation(this, R.anim.translate_up);
         translateDown = AnimationUtils.loadAnimation(this, R.anim.translate_down);
 
         manager = getSupportFragmentManager();
         manager.setFragmentFactory(new AppFragmentFactory());
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+        binding.navView.setNavigationItemSelectedListener(this);
+        toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        ivMovieType.setOnClickListener(view -> {
+        binding.ivMovieType.setOnClickListener(view -> {
             if (isMenuOpen) {
-                linearLayout.startAnimation(translateUp);
-                linearLayout.setVisibility(View.INVISIBLE);
+                binding.llMovieOrderGroup.startAnimation(translateUp);
+                binding.llMovieOrderGroup.setVisibility(View.INVISIBLE);
             } else {
-                linearLayout.startAnimation(translateDown);
-                linearLayout.setVisibility(View.VISIBLE);
-                linearLayout.bringToFront();
+                binding.llMovieOrderGroup.startAnimation(translateDown);
+                binding.llMovieOrderGroup.setVisibility(View.VISIBLE);
+                binding.llMovieOrderGroup.bringToFront();
             }
 
             isMenuOpen = !isMenuOpen;
         });
 
-        loadMovieList(1);
+        loadMovieList(RequestMovieListStrategy.REQUEST_ORDER_RANK);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return toggle.onOptionsItemSelected(item);
     }
 
     /**
@@ -119,7 +115,7 @@ public class MainActivity extends BaseActivity<MovieViewModel>
         } else if (itemId == R.id.nav_settings) {
             ToastUtil.show(this, R.string.menu_settings_user);
         }
-        drawer.closeDrawer(GravityCompat.START);
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
 
         return false;
     }
@@ -134,33 +130,21 @@ public class MainActivity extends BaseActivity<MovieViewModel>
         showMovieDetailFragment(movieId);
     }
 
-    /**
-     * Fragment에서 요청하는 데이터 처리
-     *
-     * @param type     URL 호출 타입
-     * @param bundle   저장 데이터
-     * @param listener 데이터 처리 후 이벤트 리스너
-     */
-    @Override
-    public void sendRequestOnFragment(Directory type, Bundle bundle, FinishListener listener) {
-        viewModel.sendRequest(type, bundle, listener);
-    }
-
     public void onMenuItemClicked(View view) {
         if (view.getId() == R.id.iv_movie_order_rank) {
-            ivMovieType.setBackgroundResource(R.drawable.order11);
+            binding.ivMovieType.setBackgroundResource(R.drawable.order11);
             loadMovieList(RequestMovieListStrategy.REQUEST_ORDER_RANK);
         } else if (view.getId() == R.id.iv_movie_order_curation) {
-            ivMovieType.setBackgroundResource(R.drawable.order22);
+            binding.ivMovieType.setBackgroundResource(R.drawable.order22);
             loadMovieList(RequestMovieListStrategy.REQUEST_ORDER_CURATION);
         } else {
-            ivMovieType.setBackgroundResource(R.drawable.order33);
+            binding.ivMovieType.setBackgroundResource(R.drawable.order33);
             loadMovieList(RequestMovieListStrategy.REQUEST_ORDER_UPCOMING);
         }
 
         isMenuOpen = !isMenuOpen;
-        linearLayout.startAnimation(translateUp);
-        linearLayout.setVisibility(View.INVISIBLE);
+        binding.llMovieOrderGroup.startAnimation(translateUp);
+        binding.llMovieOrderGroup.setVisibility(View.INVISIBLE);
     }
 
     /**
@@ -223,8 +207,7 @@ public class MainActivity extends BaseActivity<MovieViewModel>
      * 네트워크 통신이 시작되면 ProgressBar 로딩이 시작되고 데이터가 조회되면 종료
      */
     private void showLoading() {
-        Fragment loadingDialogFragment =
-                (LoadingFragment) manager.getFragmentFactory().instantiate(getClassLoader(), LoadingFragment.class.getName());
+        Fragment loadingDialogFragment = manager.getFragmentFactory().instantiate(getClassLoader(), LoadingFragment.class.getName());
         manager.beginTransaction().replace(R.id.container, loadingDialogFragment).commit();
     }
 }

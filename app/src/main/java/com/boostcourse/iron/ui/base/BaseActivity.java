@@ -9,13 +9,17 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.boostcourse.iron.R;
 
-public abstract class BaseActivity<VM extends BaseViewModel> extends AppCompatActivity {
+public abstract class BaseActivity<VM extends BaseViewModel, VDB extends ViewDataBinding> extends AppCompatActivity {
 
     protected VM viewModel;
+
+    protected VDB binding;
 
     protected Toolbar toolbar;
 
@@ -40,10 +44,9 @@ public abstract class BaseActivity<VM extends BaseViewModel> extends AppCompatAc
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutRes());
-        setToolbar();
-
         init();
+
+        setToolbar();
     }
 
     public void setToolbar() {
@@ -54,6 +57,9 @@ public abstract class BaseActivity<VM extends BaseViewModel> extends AppCompatAc
     }
 
     protected void init() {
+        binding = DataBindingUtil.setContentView(this, getLayoutRes());
+        binding.setLifecycleOwner(this);
+
         if (getViewModelClazz() != null && getViewModel() != null) {
             viewModel = getViewModel();
         }

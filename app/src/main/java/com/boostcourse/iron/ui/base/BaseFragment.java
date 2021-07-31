@@ -8,12 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-public abstract class BaseFragment<VM extends BaseViewModel> extends Fragment {
+public abstract class BaseFragment<VM extends BaseViewModel, VDB extends ViewDataBinding> extends Fragment {
 
     protected VM viewModel;
+    protected VDB binding;
 
     @LayoutRes
     abstract protected int getLayoutRes();
@@ -29,14 +32,15 @@ public abstract class BaseFragment<VM extends BaseViewModel> extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(getLayoutRes(), container, false);
+        binding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false);
+        binding.setLifecycleOwner(this);
 
-        init(rootView);
+        init();
 
-        return rootView;
+        return binding.getRoot();
     }
 
-    public void init(ViewGroup rootView) {
+    public void init() {
         if (getViewModelClazz() != null && getViewModel() != null) {
             viewModel = getViewModel();
         }
