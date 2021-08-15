@@ -219,11 +219,6 @@ public class MovieDetailFragment extends BaseFragment<MovieViewModel, FragmentMo
 
         viewModel.sendRequest(Directory.RECOMMEND, bundle, new FinishListener() {
             @Override
-            public void onFinish() {
-                commentListAdapter.notifyItemChanged(position);
-            }
-
-            @Override
             public void onError(Exception e) {
                 Log.e("onClickedRecommendItem()", e.getMessage() != null ? e.getMessage() : getString(R.string.please_connect_internet));
             }

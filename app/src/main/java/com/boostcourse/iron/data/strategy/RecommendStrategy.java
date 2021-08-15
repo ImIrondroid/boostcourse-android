@@ -36,10 +36,7 @@ public class RecommendStrategy implements Strategy {
                 VolleyHelper.getUrl(Directory.RECOMMEND),
                 MovieResult.class,
                 params,
-                response -> {
-                    databaseManager.saveRecommend(movieComment);
-                    listener.onFinish();
-                },
+                response -> databaseManager.saveRecommend(movieComment),
                 listener::onError
         );
     }

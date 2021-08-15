@@ -102,11 +102,6 @@ public class CommentSeeActivity extends BaseActivity<MovieViewModel, ActivityCom
 
         viewModel.sendRequest(Directory.RECOMMEND, bundle, new FinishListener() {
             @Override
-            public void onFinish() {
-                commentListAdapter.notifyItemChanged(position);
-            }
-
-            @Override
             public void onError(Exception e) {
                 Log.e("onClickedItemRecommend()", e.getMessage() != null ? e.getMessage() : getString(R.string.please_connect_internet));
             }
