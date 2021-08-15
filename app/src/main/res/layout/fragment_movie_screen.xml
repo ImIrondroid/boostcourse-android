@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="movieInfo"
+            type="com.boostcourse.iron.ui.model.MovieInfo" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -11,10 +17,10 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_movie_image"
+            imageUrl="@{movieInfo.image}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
-            android:background="@drawable/image1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +40,7 @@
                 android:id="@+id/tv_movie_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1"
+                android:text="@{String.valueOf(movieInfo.id)}"
                 android:textColor="@color/white_ffffffff"
                 android:textSize="24dp"
                 android:textStyle="bold"
@@ -59,7 +65,7 @@
                 android:id="@+id/tv_movie_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="군 도"
+                android:text="@{movieInfo.title}"
                 android:textColor="@color/white_ffffffff"
                 android:textSize="24dp"
                 android:textStyle="bold"
@@ -102,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="61.6"
+                android:text="@{String.valueOf(movieInfo.reservation_rate)}"
                 android:textColor="@color/white_ffffffff" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -120,10 +126,10 @@
                 android:textColor="@color/white_ffffffff" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_movie_audience_rating"
+                android:id="@+id/tv_movie_grade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="15"
+                android:text="@{String.valueOf(movieInfo.grade)}"
                 android:textColor="@color/white_ffffffff" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -141,9 +147,9 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_movie_release_date_diff"
+                textDate="@{String.valueOf(movieInfo.date)}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="D-1"
                 android:textColor="@color/white_ffffffff" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>

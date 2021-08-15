@@ -2,7 +2,6 @@ package com.boostcourse.iron.data.network;
 
 import android.content.Context;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.boostcourse.iron.data.Directory;
@@ -15,7 +14,6 @@ public class VolleyHelper {
     private static final String protocol = "http://";
     private static final String domain = "boostcourse-appapi.connect.or.kr";
     private static final int port = 10000;
-    public static final int RESPONSE_CODE = 200;
 
     private final Context context;
 
@@ -28,17 +26,15 @@ public class VolleyHelper {
         if (instance == null) {
             instance = new VolleyHelper(context);
         }
-        return instance;
-    }
 
-    public <T> void addRequest(Request<T> request) {
-        getRequestQueue().add(request);
+        return instance;
     }
 
     public RequestQueue getRequestQueue() {
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(context);
         }
+
         return requestQueue;
     }
 
@@ -46,10 +42,12 @@ public class VolleyHelper {
         String directory = "";
         if (type == Directory.MOVIE) directory += "/movie/readMovieList";
         else if (type == Directory.DETAIL) directory += "/movie/readMovie";
-        else if (type == Directory.COMMENTLIST || type == Directory.COMMENTCREATE) directory += "/movie/readCommentList";
+        else if (type == Directory.COMMENTLIST || type == Directory.COMMENTCREATE)
+            directory += "/movie/readCommentList";
         else if (type == Directory.CREATE) directory += "/movie/createComment";
         else if (type == Directory.RECOMMEND) directory += "/movie/increaseRecommend";
-        else if (type == Directory.LIKE || type == Directory.DISLIKE) directory += "/movie/increaseLikeDisLike";
+        else if (type == Directory.LIKE || type == Directory.DISLIKE)
+            directory += "/movie/increaseLikeDisLike";
 
         return protocol + domain + ":" + port + directory;
     }

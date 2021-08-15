@@ -91,12 +91,12 @@
                         android:layout_marginEnd="8dp"
                         android:rating="@{detail.user_rating}"
                         android:stepSize="0.1"
-                        app:layout_constraintBottom_toBottomOf="@id/tv_movie_audience_rating"
-                        app:layout_constraintEnd_toStartOf="@id/tv_movie_audience_rating"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_movie_grade"
+                        app:layout_constraintEnd_toStartOf="@id/tv_movie_grade"
                         app:layout_constraintTop_toBottomOf="@id/_line" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_movie_audience_rating"
+                        android:id="@+id/tv_movie_grade"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"

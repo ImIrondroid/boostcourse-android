@@ -9,7 +9,7 @@ import android.view.animation.AnimationUtils;
 
 import com.boostcourse.iron.R;
 import com.boostcourse.iron.data.FinishListener;
-import com.boostcourse.iron.data.strategy.RequestMovieListStrategy;
+import com.boostcourse.iron.data.strategy.MovieListStrategy;
 import com.boostcourse.iron.databinding.ActivityMainBinding;
 import com.boostcourse.iron.ui.model.MovieResponse;
 import com.boostcourse.iron.ui.model.MovieInfo;
@@ -90,7 +90,7 @@ public class MainActivity extends BaseActivity<MovieViewModel, ActivityMainBindi
             isMenuOpen = !isMenuOpen;
         });
 
-        loadMovieList(RequestMovieListStrategy.REQUEST_ORDER_RANK);
+        loadMovieList(MovieListStrategy.REQUEST_ORDER_RANK);
     }
 
     @Override
@@ -133,13 +133,13 @@ public class MainActivity extends BaseActivity<MovieViewModel, ActivityMainBindi
     public void onMenuItemClicked(View view) {
         if (view.getId() == R.id.iv_movie_order_rank) {
             binding.ivMovieType.setBackgroundResource(R.drawable.order11);
-            loadMovieList(RequestMovieListStrategy.REQUEST_ORDER_RANK);
+            loadMovieList(MovieListStrategy.REQUEST_ORDER_RANK);
         } else if (view.getId() == R.id.iv_movie_order_curation) {
             binding.ivMovieType.setBackgroundResource(R.drawable.order22);
-            loadMovieList(RequestMovieListStrategy.REQUEST_ORDER_CURATION);
+            loadMovieList(MovieListStrategy.REQUEST_ORDER_CURATION);
         } else {
             binding.ivMovieType.setBackgroundResource(R.drawable.order33);
-            loadMovieList(RequestMovieListStrategy.REQUEST_ORDER_UPCOMING);
+            loadMovieList(MovieListStrategy.REQUEST_ORDER_UPCOMING);
         }
 
         isMenuOpen = !isMenuOpen;

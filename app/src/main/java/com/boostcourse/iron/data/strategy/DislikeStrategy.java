@@ -15,11 +15,11 @@ import com.boostcourse.iron.data.network.VolleyHelper;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RequestDislikeStrategy implements RequestStrategy {
+public class DislikeStrategy implements Strategy {
 
     private final DatabaseManager databaseManager;
 
-    public RequestDislikeStrategy(DatabaseManager databaseManager) {
+    public DislikeStrategy(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
     }
 
@@ -35,6 +35,7 @@ public class RequestDislikeStrategy implements RequestStrategy {
         paramsDislike.put("dislikeyn", dislikeyn);
 
         return new GsonRequest<>(
+                Request.Method.POST,
                 VolleyHelper.getUrl(Directory.DISLIKE),
                 MovieResult.class,
                 paramsDislike,

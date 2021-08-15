@@ -21,9 +21,9 @@ public class GsonRequest<T> extends Request<T> {
     private final Map<String, String> params;
     private final Response.Listener<T> listener;
 
-    public GsonRequest(String url, Class<T> clazz, Map<String, String> params,
+    public GsonRequest(int method, String url, Class<T> clazz, Map<String, String> params,
                        Response.Listener<T> listener, Response.ErrorListener errorListener) {
-        super(Method.POST, url, errorListener);
+        super(method, url, errorListener);
         this.clazz = clazz;
         this.params = params;
         this.listener = listener;

@@ -13,7 +13,7 @@ import com.boostcourse.iron.data.network.VolleyHelper;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RequestCreateStrategy implements RequestStrategy {
+public class CreateStrategy implements Strategy {
 
     @Override
     public Request<? extends MovieResponse> newRequest(Bundle bundle, FinishListener listener) {
@@ -30,6 +30,7 @@ public class RequestCreateStrategy implements RequestStrategy {
         params.put("contents", contents);
 
         return new GsonRequest<>(
+                Request.Method.POST,
                 VolleyHelper.getUrl(Directory.CREATE),
                 MovieResult.class,
                 params,

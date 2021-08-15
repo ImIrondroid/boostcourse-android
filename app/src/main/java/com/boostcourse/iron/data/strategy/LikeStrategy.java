@@ -15,11 +15,11 @@ import com.boostcourse.iron.data.network.VolleyHelper;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RequestLikeStrategy implements RequestStrategy {
+public class LikeStrategy implements Strategy {
 
     private final DatabaseManager databaseManager;
 
-    public RequestLikeStrategy(DatabaseManager databaseManager) {
+    public LikeStrategy(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
     }
 
@@ -35,6 +35,7 @@ public class RequestLikeStrategy implements RequestStrategy {
         paramsLike.put("likeyn", likeyn);
 
         return new GsonRequest<>(
+                Request.Method.POST,
                 VolleyHelper.getUrl(Directory.LIKE),
                 MovieResult.class,
                 paramsLike,

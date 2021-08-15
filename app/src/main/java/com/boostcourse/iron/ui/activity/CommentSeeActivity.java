@@ -56,6 +56,12 @@ public class CommentSeeActivity extends BaseActivity<MovieViewModel, ActivityCom
                 commentListAdapter.setRecommendCallbackListener(this);
                 binding.rcvMovieComment.setAdapter(commentListAdapter);
 
+                viewModel.getMovieCommentList(movieDetail.getId()).observe(this, commentList -> {
+                    if (!commentList.isEmpty()) {
+                        commentListAdapter.submitList(commentList.subList(0, 20));
+                    }
+                });
+
                 loadMovieCommentList();
             }
         }
@@ -72,12 +78,6 @@ public class CommentSeeActivity extends BaseActivity<MovieViewModel, ActivityCom
         bundle.putString("movieId", String.valueOf(movieDetail.getId()));
 
         viewModel.sendRequest(Directory.COMMENTLIST, bundle, new FinishListener() {
-            @Override
-            public void onFinish() {
-                viewModel.getMovieCommentList(movieDetail.getId()).observe(CommentSeeActivity.this, commentList ->
-                        commentListAdapter.submitList(commentList));
-            }
-
             @Override
             public void onError(Exception e) {
                 Log.e("loadMovieCommentList()", e.getMessage() != null ? e.getMessage() : getString(R.string.please_connect_internet));

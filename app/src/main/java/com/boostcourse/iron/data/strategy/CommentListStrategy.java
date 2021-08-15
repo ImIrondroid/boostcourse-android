@@ -16,34 +16,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RequestCommentCreateStrategy implements RequestStrategy {
+public class CommentListStrategy implements Strategy {
 
     private final DatabaseManager databaseManager;
 
-    public RequestCommentCreateStrategy(DatabaseManager databaseManager) {
+    public CommentListStrategy(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
     }
 
     @Override
     public Request<? extends MovieResponse> newRequest(Bundle bundle, FinishListener listener) {
 
-        String movieId = bundle.getString("movieId");
+        String id = bundle.getString("movieId");
         String limit = "20";
 
         Map<String, String> params = new HashMap<>();
-        params.put("id", movieId);
+        params.put("id", id);
         params.put("limit", limit);
 
         return new GsonRequest<>(
-                VolleyHelper.getUrl(Directory.COMMENTCREATE),
+                Request.Method.POST,
+                VolleyHelper.getUrl(Directory.COMMENTLIST),
                 MovieCommentResult.class,
                 params,
                 response -> {
                     List<MovieComment> newList = response.getResult();
-                    boolean isComplete = databaseManager.isCommentInserted(newList.get(0)); //방금 등록된 새로운 한줄평
-                    if (isComplete) {
-                        listener.onFinish();
-                    }
+                    databaseManager.isCommentListSaved(newList);
+                    boolean isComplete = databaseManager.isCommentListSaved(newList);
                 },
                 listener::onError
         );

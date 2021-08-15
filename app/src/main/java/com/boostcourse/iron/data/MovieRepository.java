@@ -9,14 +9,14 @@ import com.boostcourse.iron.ui.model.MovieComment;
 import com.boostcourse.iron.ui.model.MovieDetail;
 import com.boostcourse.iron.ui.model.MovieInfo;
 import com.boostcourse.iron.data.network.RequestStrategy;
-import com.boostcourse.iron.data.strategy.RequestCommentCreateStrategy;
-import com.boostcourse.iron.data.strategy.RequestCommentListStrategy;
-import com.boostcourse.iron.data.strategy.RequestCreateStrategy;
-import com.boostcourse.iron.data.strategy.RequestDetailStrategy;
-import com.boostcourse.iron.data.strategy.RequestDislikeStrategy;
-import com.boostcourse.iron.data.strategy.RequestLikeStrategy;
-import com.boostcourse.iron.data.strategy.RequestMovieListStrategy;
-import com.boostcourse.iron.data.strategy.RequestRecommendStrategy;
+import com.boostcourse.iron.data.strategy.CommentCreateStrategy;
+import com.boostcourse.iron.data.strategy.CommentListStrategy;
+import com.boostcourse.iron.data.strategy.CreateStrategy;
+import com.boostcourse.iron.data.strategy.DetailStrategy;
+import com.boostcourse.iron.data.strategy.DislikeStrategy;
+import com.boostcourse.iron.data.strategy.LikeStrategy;
+import com.boostcourse.iron.data.strategy.MovieListStrategy;
+import com.boostcourse.iron.data.strategy.RecommendStrategy;
 import com.boostcourse.iron.util.NetworkUtil;
 
 import java.util.List;
@@ -54,21 +54,21 @@ public class MovieRepository {
             RequestStrategy requestStrategy = new RequestStrategy();
 
             if (directory == Directory.MOVIE) {
-                requestStrategy.setStrategy(new RequestMovieListStrategy(databaseManager));
+                requestStrategy.setStrategy(new MovieListStrategy(databaseManager));
             } else if (directory == Directory.DETAIL) {
-                requestStrategy.setStrategy(new RequestDetailStrategy(databaseManager));
+                requestStrategy.setStrategy(new DetailStrategy(databaseManager));
             } else if (directory == Directory.COMMENTLIST) {
-                requestStrategy.setStrategy(new RequestCommentListStrategy(databaseManager));
+                requestStrategy.setStrategy(new CommentListStrategy(databaseManager));
             } else if (directory == Directory.LIKE) {
-                requestStrategy.setStrategy(new RequestLikeStrategy(databaseManager));
+                requestStrategy.setStrategy(new LikeStrategy(databaseManager));
             } else if (directory == Directory.DISLIKE) {
-                requestStrategy.setStrategy(new RequestDislikeStrategy(databaseManager));
+                requestStrategy.setStrategy(new DislikeStrategy(databaseManager));
             } else if (directory == Directory.RECOMMEND) {
-                requestStrategy.setStrategy(new RequestRecommendStrategy(databaseManager));
+                requestStrategy.setStrategy(new RecommendStrategy(databaseManager));
             } else if (directory == Directory.COMMENTCREATE) {
-                requestStrategy.setStrategy(new RequestCommentCreateStrategy(databaseManager));
+                requestStrategy.setStrategy(new CommentCreateStrategy(databaseManager));
             } else if (directory == Directory.CREATE) {
-                requestStrategy.setStrategy(new RequestCreateStrategy());
+                requestStrategy.setStrategy(new CreateStrategy());
             }
 
             if (requestStrategy.isSet()) {

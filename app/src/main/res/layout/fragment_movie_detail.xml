@@ -33,13 +33,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <com.android.volley.toolbox.NetworkImageView
                     android:id="@+id/iv_movie_image"
                     android:layout_width="100dp"
                     android:layout_height="140dp"
                     app:imageUrl="@{detail.thumb}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+<!--                <androidx.appcompat.widget.AppCompatImageView-->
+<!--                    android:id="@+id/iv_movie_image"-->
+<!--                    android:layout_width="100dp"-->
+<!--                    android:layout_height="140dp"-->
+<!--                    app:imageUrl="@{detail.thumb}"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_movie_title"
@@ -279,7 +287,7 @@
                             android:stepSize="0.1" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tv_movie_audience_rating"
+                            android:id="@+id/tv_movie_grade"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
