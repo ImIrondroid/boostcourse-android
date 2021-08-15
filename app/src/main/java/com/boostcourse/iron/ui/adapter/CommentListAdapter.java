@@ -1,5 +1,6 @@
 package com.boostcourse.iron.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import com.boostcourse.iron.R;
 import com.boostcourse.iron.databinding.ItemCommentBinding;
 import com.boostcourse.iron.ui.base.BaseViewHolder;
 import com.boostcourse.iron.ui.model.MovieComment;
+
+import java.util.List;
 
 public class CommentListAdapter extends ListAdapter<MovieComment, CommentListAdapter.CommentListViewHolder> {
 
@@ -31,6 +34,13 @@ public class CommentListAdapter extends ListAdapter<MovieComment, CommentListAda
 
     public void setRecommendCallbackListener(CommentListCallback callback) {
         this.callback = callback;
+    }
+    
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void onCurrentListChanged(@NonNull List<MovieComment> previousList, @NonNull List<MovieComment> currentList) {
+        super.onCurrentListChanged(previousList, currentList);
+        notifyDataSetChanged();
     }
 
     @NonNull
